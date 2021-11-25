@@ -100,7 +100,7 @@ class TeamDetailActivity :
     }
 
     private fun sendEventsInfoToAdapter(eventsInfo: List<Event>) {
-        eventsAdapter = EventsAdapter(eventsInfo)
+        eventsAdapter = EventsAdapter(eventsInfo, this)
         binding.rVEvents.adapter = eventsAdapter
     }
 

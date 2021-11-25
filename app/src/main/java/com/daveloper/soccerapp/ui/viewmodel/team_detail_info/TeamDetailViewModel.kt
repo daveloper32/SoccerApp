@@ -6,15 +6,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.daveloper.soccerapp.R
 import com.daveloper.soccerapp.data.model.entity.Event
+import com.daveloper.soccerapp.domain.GetXNextTeamEventsInfoUseCase
 import com.daveloper.soccerapp.ui.view.main.MainActivity
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class TeamDetailViewModel @Inject constructor(
-
+    private val getXNextTeamEventsInfoUseCase: GetXNextTeamEventsInfoUseCase
 ): ViewModel() {
 
     private val _progressVisibility = MutableLiveData<Boolean>()
@@ -37,18 +40,34 @@ class TeamDetailViewModel @Inject constructor(
 
     fun onCreate(intent: Intent?) {
         _progressVisibility.value = true
+
         val teamName = getTeamName(intent)
         if (teamName != null) {
-            if (teamName.isEmpty()) {
+            if (!teamName.isEmpty()) {
+                getDataForRecyclerView (teamName)
+                _progressVisibility.value = false
+            } else {
                 _goToXActivity.value = MainActivity::class.java
                 _showInfoMessage.value = R.string.iM_team_det_initError
-            } else {
-                _showStrInfoMessage.value = "$teamName selected!"
+                _progressVisibility.value = false
             }
         } else {
-            _showStrInfoMessage.value = "$teamName selected!"
+            _goToXActivity.value = MainActivity::class.java
+            _showInfoMessage.value = R.string.iM_team_det_initError
+            _progressVisibility.value = false
         }
-        //_progressEventsVisibility.value = true
+    }
+
+    private fun getDataForRecyclerView(teamName: String) {
+        _progressEventsVisibility.value = true
+        viewModelScope.launch {
+            val eventsInfo = getXNextTeamEventsInfoUseCase
+                .getInfo(teamName = teamName)
+            if (!eventsInfo.isNullOrEmpty()) {
+                _recyclerViewData.postValue(eventsInfo)
+                _progressEventsVisibility.postValue(false)
+            }
+        }
     }
 
     fun getTeamName (

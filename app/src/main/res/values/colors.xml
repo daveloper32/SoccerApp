@@ -11,6 +11,7 @@
     <color name="purple_triad_900">#2a1fa0</color>
     <color name="violet_triad_500">#a01f95</color>
     <color name="black">#FF000000</color>
+    <color name="black_light">#E3E3E3</color>
     <color name="white">#FFFFFFFF</color>
     <color name="invisible">#00FFFFFF</color>
 </resources>

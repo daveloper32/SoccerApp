@@ -1,5 +1,6 @@
 package com.daveloper.soccerapp.ui.view.team_detail_info
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,16 +8,19 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.daveloper.soccerapp.R
+import com.daveloper.soccerapp.auxiliar.ext_fun.getStringResource
 import com.daveloper.soccerapp.data.model.entity.Event
 
 class EventsAdapter (
-    private val eventsList: List<Event>
+    private val eventsList: List<Event>,
+    private val context: Context
 ) : RecyclerView.Adapter<EventsAdapter.ViewHolder>()
 {
     inner class ViewHolder (
         view: View
     ) : RecyclerView.ViewHolder(view)
     {
+
         val tV_eventcV_date: TextView
         val tV_eventcV_hour: TextView
         val imgV_eventcV_home_badge: ImageView
@@ -33,6 +37,7 @@ class EventsAdapter (
         }
     }
 
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View = LayoutInflater
             .from(parent.context)
@@ -42,7 +47,12 @@ class EventsAdapter (
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.tV_eventcV_date.text = eventsList.get(position).dateEvent
-        holder.tV_eventcV_hour.text = eventsList.get(position).timeEvent
+        if (!eventsList.get(position).timeEvent.equals(context.getStringResource(R.string.msg_team_det_noHour))) {
+            holder.tV_eventcV_hour.text = eventsList.get(position).timeEvent
+        } else {
+            holder.tV_eventcV_hour.text = context.getStringResource(R.string.msg_team_det_noHour_exp)
+        }
+
         holder.tV_eventcV_home_team.text = eventsList.get(position).homeTeam
         holder.tV_eventcV_away_team.text = eventsList.get(position).awayTeam
     }
