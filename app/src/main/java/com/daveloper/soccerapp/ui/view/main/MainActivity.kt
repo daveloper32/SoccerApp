@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.daveloper.soccerapp.auxiliar.ext_fun.getStringResource
 import com.daveloper.soccerapp.auxiliar.ext_fun.goToXActivity
+import com.daveloper.soccerapp.auxiliar.ext_fun.goToXActivityWithData
 import com.daveloper.soccerapp.auxiliar.ext_fun.toast
 import com.daveloper.soccerapp.databinding.ActivityMainBinding
 import com.daveloper.soccerapp.data.model.entity.Team
@@ -72,6 +73,19 @@ class MainActivity : AppCompatActivity(),
                 sendTeamsInfoToAdapter(it)
             }
         )
+        viewModel.refreshRecyclerViewData.observe(
+            this,
+            Observer {
+                sendTeamsInfoToAdapter(it)
+                binding.rVRefreshMain.isRefreshing = false
+            }
+        )
+        viewModel.goToXActivityWithData.observe(
+            this,
+            Observer {
+                goToXActivityWithData(it.activity, it.teamSelected)
+            }
+        )
     }
 
     private fun sendTeamsInfoToAdapter(teamsInfo: List<Team>) {
@@ -84,11 +98,14 @@ class MainActivity : AppCompatActivity(),
 
 
     override fun onItemClicked(selectedItem: Int, teamSelected: String) {
-        toast("$teamSelected is Selected!")
+        viewModel.onTeamClicked(teamSelected)
     }
 
     override fun onRefresh() {
-        viewModel.onCreate()
-        binding.rVRefreshMain.isRefreshing = false
+        viewModel.onRefreshRv()
+    }
+
+    override fun onBackPressed() {
+        finish()
     }
 }

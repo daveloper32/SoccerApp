@@ -15,4 +15,35 @@
 
     <string name="iM_main_failGetTeams">¡Something went wrong! Check your internet connection.</string>
 
+    <string name="tB_imgV_team_det_backicon_cD">Back Icon</string>
+    <string name="tB_tV_team_det_title">Team Details</string>
+
+    <string name="tV_team_det_name">Team Name</string>
+    <string name="tV_team_det_description">Team Description</string>
+    <string name="tV_team_det_found_year_sub">Foundation Year:  </string>
+    <string name="tV_team_det_found_year">0000</string>
+    <string name="imgV_team_det_badge_cD">Team Badge</string>
+    <string name="tV_team_det_next_events_title">Next Events</string>
+    <string name="imgV_team_det_jersey_cD">Team Jersey</string>
+    <string name="tV_team_det_webPage_title">Webpage</string>
+    <string name="tV_team_det_webPage">www.adsffsohaoiahsfo.com</string>
+    <string name="imgB_team_webPage_cD">Redirect to Club Webpage Icon</string>
+    <string name="tV_team_det_social_networks_title">- or -</string>
+    <string name="imgB_team_det_facebook_cD">Redirect to Club Facebook Webpage Icon</string>
+    <string name="imgB_team_det_instagram_cD">Redirect to Club Instagram Webpage Icon</string>
+    <string name="imgB_team_det_twitter_cD">Redirect to Club Twitter Webpage Icon</string>
+    <string name="imgB_team_det_youtube_cD">Redirect to Club Youtube Webpage Icon</string>
+
+    <string name="tV_eventcV_date">##/##/####</string>
+    <string name="tV_eventcV_hour">##:##</string>
+    <string name="imgV_eventcV_home_badge_cD">Home Team Badge</string>
+    <string name="imgV_eventcV_away_badge_cD">Away Team Badge</string>
+    <string name="tV_eventcV_home_team">Home Team Name</string>
+    <string name="tV_eventcV_vs">vs</string>
+    <string name="tV_eventcV_away_team">Away Team Name</string>
+
+    <string name="iM_team_det_initError">¡Something went wrong! Try again.</string>
+
+
+
 </resources>

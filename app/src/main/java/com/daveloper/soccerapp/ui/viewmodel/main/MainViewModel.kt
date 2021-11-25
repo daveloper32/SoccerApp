@@ -6,15 +6,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.daveloper.soccerapp.R
+import com.daveloper.soccerapp.data.model.entity.Event
 import com.daveloper.soccerapp.data.model.entity.Team
-import com.daveloper.soccerapp.data.model.repository.OnResultSearchTeamsInfoByLeague
-import com.daveloper.soccerapp.data.model.repository.SoccerLeagueDataRepository
 import com.daveloper.soccerapp.domain.GetTeamsInfoByLeagueUseCase
+import com.daveloper.soccerapp.ui.view.team_detail_info.TeamDetailActivity
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -37,6 +34,12 @@ class MainViewModel @Inject constructor(
 
     private val _recyclerViewData = MutableLiveData<List<Team>>()
     val recyclerViewData : LiveData<List<Team>> get() = _recyclerViewData
+
+    private val _refreshRecyclerViewData = MutableLiveData<List<Team>>()
+    val refreshRecyclerViewData : LiveData<List<Team>> get() = _refreshRecyclerViewData
+
+    private val _goToXActivityWithData = MutableLiveData<IntentAndTeamData>()
+    val goToXActivityWithData : LiveData<IntentAndTeamData> get() = _goToXActivityWithData
     
     fun onCreate() {
         _progressVisibility.value = true
@@ -49,4 +52,29 @@ class MainViewModel @Inject constructor(
             }
         }
     }
+
+    fun onRefreshRv() {
+        _progressVisibility.value = true
+        viewModelScope.launch {
+            val teamsInfo = getTeamsInfoByLeagueUseCase
+                .getInfo("Spanish_La_Liga")
+            if (!teamsInfo.isNullOrEmpty()) {
+                _refreshRecyclerViewData.postValue(teamsInfo)
+                _progressVisibility.postValue(false)
+            }
+        }
+    }
+
+    fun onTeamClicked(teamSelected: String) {
+        _goToXActivityWithData.value =
+            IntentAndTeamData(
+                TeamDetailActivity::class.java,
+                teamSelected
+            )
+    }
 }
+
+data class IntentAndTeamData (
+    var activity: Class<out AppCompatActivity?>,
+    var teamSelected: String
+        )

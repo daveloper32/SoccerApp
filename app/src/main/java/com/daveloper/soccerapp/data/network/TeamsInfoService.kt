@@ -2,8 +2,6 @@ package com.daveloper.soccerapp.data.network
 
 import com.daveloper.soccerapp.core.RetrofitHelper
 import com.daveloper.soccerapp.data.model.entity.Team
-import com.daveloper.soccerapp.data.model.repository.OnResultSearchTeamsInfoByLeague
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

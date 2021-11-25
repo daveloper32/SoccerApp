@@ -13,3 +13,18 @@ fun Activity.goToXActivity(activity: Class<out AppCompatActivity?>, finishActivi
         this.finish()
     }
 }
+
+fun Activity.goToXActivityWithData(
+    activity: Class<out AppCompatActivity?>,
+    data: String,
+    finishActivity: Boolean = true
+){
+    // Creamos un objeto de la clase Intent para que al presionar el boton vayamos al Activity que queramos ir
+    val i: Intent = Intent(this, activity)
+    i.putExtra("data", data)
+    // Iniciamos el Activity al que queremos ir
+    startActivity(i)
+    if (finishActivity) {
+        this.finish()
+    }
+}
