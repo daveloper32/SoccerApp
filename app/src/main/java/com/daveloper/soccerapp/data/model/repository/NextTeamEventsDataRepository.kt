@@ -2,8 +2,8 @@ package com.daveloper.soccerapp.data.model.repository
 
 import android.content.Context
 import com.daveloper.soccerapp.core.LeagueAPIHelper
-import com.daveloper.soccerapp.data.local_database.dao.TeamDao
-import com.daveloper.soccerapp.data.local_database.database.RoomTeamsDatabase
+import com.daveloper.soccerapp.data.local_database.room.dao.TeamDao
+import com.daveloper.soccerapp.data.local_database.room.database.RoomTeamsDatabase
 import com.daveloper.soccerapp.data.model.entity.Event
 import com.daveloper.soccerapp.data.model.entity.Team
 import com.daveloper.soccerapp.data.network.EventsInfoService

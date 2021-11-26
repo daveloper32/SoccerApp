@@ -1,12 +1,11 @@
-package com.daveloper.soccerapp.data.local_database.database
+package com.daveloper.soccerapp.data.local_database.room.database
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.daveloper.soccerapp.data.local_database.dao.TeamDao
+import com.daveloper.soccerapp.data.local_database.room.dao.TeamDao
 import com.daveloper.soccerapp.data.model.entity.Team
-import javax.inject.Inject
 
 @Database (
     entities = [Team::class],

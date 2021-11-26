@@ -1,8 +1,10 @@
 package com.daveloper.soccerapp.data.model.repository
 
 import android.content.Context
-import com.daveloper.soccerapp.data.local_database.dao.TeamDao
-import com.daveloper.soccerapp.data.local_database.database.RoomTeamsDatabase
+import androidx.recyclerview.widget.DividerItemDecoration
+import com.daveloper.soccerapp.data.local_database.room.dao.TeamDao
+import com.daveloper.soccerapp.data.local_database.room.database.RoomTeamsDatabase
+import com.daveloper.soccerapp.data.local_database.shared_prefs.UserLocalData
 import com.daveloper.soccerapp.data.model.entity.Team
 import com.daveloper.soccerapp.data.network.TeamsInfoService
 import kotlinx.coroutines.Dispatchers
@@ -10,7 +12,8 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class SoccerLeagueDataRepository @Inject constructor(
-    private val teamsInfoAPI: TeamsInfoService
+    private val teamsInfoAPI: TeamsInfoService,
+    private val userLocalData: UserLocalData
 ){
     private lateinit var dB: RoomTeamsDatabase
     private lateinit var teamDao: TeamDao
@@ -39,6 +42,23 @@ class SoccerLeagueDataRepository @Inject constructor(
                     }
                 }
             }
+        }
+    }
+
+    suspend fun saveSelectedLeague (
+        context: Context,
+        league: String
+    ) {
+        withContext(Dispatchers.IO){
+            userLocalData.setUserLocalData(context, league)
+        }
+    }
+
+    suspend fun getSavedSelectedLeague (
+        context: Context
+    ) : String {
+        return withContext(Dispatchers.IO){
+            userLocalData.getUserLocalData(context)
         }
     }
 }

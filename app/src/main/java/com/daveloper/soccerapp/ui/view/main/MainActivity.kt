@@ -73,6 +73,12 @@ class MainActivity : AppCompatActivity(),
                 goToXActivity(it)
             }
         )
+        viewModel.setSpinnerPosition.observe(
+            this,
+            Observer {
+                binding.tBMain.spinner.setSelection(it)
+            }
+        )
         viewModel.spinnerData.observe(
             this,
             Observer {
@@ -127,7 +133,7 @@ class MainActivity : AppCompatActivity(),
     }
 
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-        viewModel.onRefreshRv(
+        viewModel.onSpinnerItemChanged(
             this,
             binding.tBMain.spinner.selectedItem as String
         )

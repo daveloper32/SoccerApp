@@ -1,8 +1,7 @@
-package com.daveloper.soccerapp.data.local_database.dao
+package com.daveloper.soccerapp.data.local_database.room.dao
 
 import androidx.room.*
 import com.daveloper.soccerapp.data.model.entity.Team
-import javax.inject.Inject
 
 @Dao
 interface TeamDao {
