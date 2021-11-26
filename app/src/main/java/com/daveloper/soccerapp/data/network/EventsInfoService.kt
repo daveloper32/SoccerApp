@@ -13,7 +13,6 @@ import javax.inject.Inject
 class EventsInfoService @Inject constructor(
 
 ) {
-
     private val apiTeamEventsInfo: String =
         "https://www.thesportsdb.com/api/v1/json/2/"
 

@@ -21,7 +21,6 @@ class EventsAdapter (
         view: View
     ) : RecyclerView.ViewHolder(view)
     {
-
         val tV_eventcV_date: TextView
         val tV_eventcV_hour: TextView
         val imgV_eventcV_home_badge: ImageView
@@ -63,6 +62,4 @@ class EventsAdapter (
     override fun getItemCount(): Int {
         return eventsList.size
     }
-
-
 }

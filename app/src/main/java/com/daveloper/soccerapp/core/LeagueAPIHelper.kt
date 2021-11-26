@@ -24,9 +24,4 @@ object LeagueAPIHelper {
         englishLeagueN,
         italianLeagueN
     )
-    fun getAllLeagues() = listOf<String>(
-        spanishLeague,
-        englishLeague,
-        italianLeague
-    )
 }

@@ -1,15 +1,13 @@
 package com.daveloper.soccerapp.ui.viewmodel.main
 
-
 import android.content.Context
-
-import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.daveloper.soccerapp.core.LeagueAPIHelper
+import com.daveloper.soccerapp.data.model.entity.IntentAndTeamData
 import com.daveloper.soccerapp.data.model.entity.Team
 import com.daveloper.soccerapp.domain.GetSavedSelectedLeagueUseCase
 import com.daveloper.soccerapp.domain.GetTeamsInfoByLeagueUseCase
@@ -69,15 +67,6 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun getSpinnerIndex(league: String): Int {
-        when (league) {
-            LeagueAPIHelper.getSpanishLeagueN() -> return 0
-            LeagueAPIHelper.getEnglishLeagueN() -> return 1
-            LeagueAPIHelper.getItalianLeagueN() -> return 2
-            else -> return 0
-        }
-    }
-
     fun onRefreshRv(
         context: Context
     ) {
@@ -110,6 +99,15 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    private fun getSpinnerIndex(league: String): Int {
+        when (league) {
+            LeagueAPIHelper.getSpanishLeagueN() -> return 0
+            LeagueAPIHelper.getEnglishLeagueN() -> return 1
+            LeagueAPIHelper.getItalianLeagueN() -> return 2
+            else -> return 0
+        }
+    }
+
     fun onSpinnerItemChanged(context: Context, newLeague: String) {
         viewModelScope.launch {
             saveSelectedLeagueUseCase.saveInfo(context, newLeague)
@@ -117,8 +115,3 @@ class MainViewModel @Inject constructor(
         }
     }
 }
-
-data class IntentAndTeamData (
-    var activity: Class<out AppCompatActivity?>,
-    var teamSelected: String
-        )

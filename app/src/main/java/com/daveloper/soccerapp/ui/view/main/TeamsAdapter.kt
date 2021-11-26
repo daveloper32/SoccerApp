@@ -1,6 +1,5 @@
 package com.daveloper.soccerapp.ui.view.main
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,9 +30,11 @@ class TeamsAdapter(
             tV_teamcV_stadium = view.findViewById(R.id.tV_teamcV_stadium)
             view.setOnClickListener(this)
         }
+
         fun getSelectedTeam () : String {
             return tV_teamcV_name.text.toString()
         }
+
         override fun onClick(v: View?) {
             val selectedItem: Int = adapterPosition
             if (selectedItem != RecyclerView.NO_POSITION) {
@@ -42,7 +43,6 @@ class TeamsAdapter(
                 }
             }
         }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

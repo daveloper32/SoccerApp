@@ -1,6 +1,5 @@
 package com.daveloper.soccerapp.ui.view.team_detail_info
 
-import android.app.SharedElementCallback
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
