@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.daveloper.soccerapp.R
 import com.daveloper.soccerapp.auxiliar.ext_fun.getStringResource
+import com.daveloper.soccerapp.auxiliar.ext_fun.loadImage
 import com.daveloper.soccerapp.data.model.entity.Event
 
 class EventsAdapter (
@@ -52,6 +53,8 @@ class EventsAdapter (
         } else {
             holder.tV_eventcV_hour.text = context.getStringResource(R.string.msg_team_det_noHour_exp)
         }
+        eventsList.get(position).homeTeamBadge?.let { holder.imgV_eventcV_home_badge.loadImage(it, false) }
+        eventsList.get(position).awayTeamBadge?.let { holder.imgV_eventcV_away_badge.loadImage(it, false) }
 
         holder.tV_eventcV_home_team.text = eventsList.get(position).homeTeam
         holder.tV_eventcV_away_team.text = eventsList.get(position).awayTeam

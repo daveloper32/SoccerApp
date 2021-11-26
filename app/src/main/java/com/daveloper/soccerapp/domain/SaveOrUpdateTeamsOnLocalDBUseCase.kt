@@ -5,15 +5,13 @@ import com.daveloper.soccerapp.data.model.entity.Team
 import com.daveloper.soccerapp.data.model.repository.SoccerLeagueDataRepository
 import javax.inject.Inject
 
-class GetTeamsInfoByLeagueUseCase @Inject constructor(
+class SaveOrUpdateTeamsOnLocalDBUseCase @Inject constructor(
     private val repository: SoccerLeagueDataRepository
 ) {
-    suspend fun getInfo(
-        soccerLeague: String,
+    suspend fun saveOrUpdateOnDB (
+        teamsToAdd: List<Team>,
         context: Context
-    ) : List<Team> {
-        val data = repository.getAllSearchTeamsInfoByLeague(soccerLeague)
-        repository.saveInfoAPIinLocalDB(data, context)
-        return data
+    ) {
+        repository.saveInfoAPIinLocalDB(teamsToAdd, context)
     }
 }

@@ -6,5 +6,7 @@ data class Event (
     @SerializedName("strHomeTeam") var homeTeam: String?,
     @SerializedName("strAwayTeam") var awayTeam: String?,
     @SerializedName("dateEvent") var dateEvent: String?,
-    @SerializedName("strTime") var timeEvent: String?
+    @SerializedName("strTime") var timeEvent: String?,
+    var homeTeamBadge: String? = "",
+    var awayTeamBadge: String? = ""
 )

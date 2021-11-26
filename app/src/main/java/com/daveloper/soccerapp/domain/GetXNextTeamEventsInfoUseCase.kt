@@ -1,6 +1,7 @@
 package com.daveloper.soccerapp.domain
 
 
+import android.content.Context
 import com.daveloper.soccerapp.core.LeagueIdsFromAPI
 import com.daveloper.soccerapp.data.model.entity.Event
 import com.daveloper.soccerapp.data.model.repository.NextTeamEventsDataRepository
@@ -12,12 +13,18 @@ class GetXNextTeamEventsInfoUseCase @Inject constructor(
     suspend fun getInfo (
         numNextEvents: Int = 5,
         idLeague: Int = LeagueIdsFromAPI.getSpanishLeagueID(),
-        teamName: String
+        teamName: String,
+        context: Context
     ) : List<Event> {
-        return repository.getXNextTeamEventsInfo(
+        val data =  repository.getXNextTeamEventsInfo(
             numNextEvents,
             idLeague,
             teamName
         )
+        for (event in data) {
+            event.homeTeamBadge = event.homeTeam?.let { repository.getBadgeImageTeam(it, context) }
+            event.awayTeamBadge = event.awayTeam?.let { repository.getBadgeImageTeam(it, context) }
+        }
+        return data
     }
 }

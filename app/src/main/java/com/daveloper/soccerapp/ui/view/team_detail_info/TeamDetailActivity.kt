@@ -1,5 +1,6 @@
 package com.daveloper.soccerapp.ui.view.team_detail_info
 
+import android.app.SharedElementCallback
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.daveloper.soccerapp.auxiliar.ext_fun.getStringResource
 import com.daveloper.soccerapp.auxiliar.ext_fun.goToXActivity
+import com.daveloper.soccerapp.auxiliar.ext_fun.loadImage
 import com.daveloper.soccerapp.auxiliar.ext_fun.toast
 import com.daveloper.soccerapp.data.model.entity.Event
 import com.daveloper.soccerapp.databinding.ActivityTeamDetailBinding
@@ -40,7 +42,7 @@ class TeamDetailActivity :
     private fun startView() {
         initLiveData()
         binding.rVEvents.layoutManager = LinearLayoutManager(this)
-        viewModel.onCreate(intent)
+        viewModel.onCreate(intent, this)
         // Listeners
         binding.tBTeamDetail.tBImgVTeamDetBackicon.setOnClickListener(this)
         binding.tVTeamDetWebPage.setOnClickListener(this)
@@ -97,6 +99,132 @@ class TeamDetailActivity :
                 sendEventsInfoToAdapter(it)
             }
         )
+        viewModel.setTextTeamName.observe(
+            this,
+            Observer {
+                binding.tVTeamDetName.text = it
+            }
+        )
+        viewModel.setTextTeamDescription.observe(
+            this,
+            Observer {
+                binding.tVTeamDetDescription.text = it
+            }
+        )
+        viewModel.setTextFoundationYear.observe(
+            this,
+            Observer {
+                binding.tVTeamDetFoundYear.text = it
+            }
+        )
+        viewModel.setImageTeamBadge.observe(
+            this,
+            Observer {
+                binding.imgVTeamDetBadge.loadImage(it, false)
+            }
+        )
+        viewModel.setImageTeamJersey.observe(
+            this,
+            Observer {
+                binding.imgVTeamDetJersey.loadImage(it, false)
+            }
+        )
+        viewModel.setTextWebpage.observe(
+            this,
+            Observer {
+                binding.tVTeamDetWebPage.text = it
+            }
+        )
+        viewModel.linkToWebpage.observe(
+            this,
+            Observer {
+                startActivity(it)
+            }
+        )
+        viewModel.linkToFacebookWebpage.observe(
+            this,
+            Observer {
+                startActivity(it)
+            }
+        )
+        viewModel.linkToInstagramWebpage.observe(
+            this,
+            Observer {
+                startActivity(it)
+            }
+        )
+        viewModel.linkToTwitterWebpage.observe(
+            this,
+            Observer {
+                startActivity(it)
+            }
+        )
+        viewModel.linkToYoutubeWebpage.observe(
+            this,
+            Observer {
+                startActivity(it)
+            }
+        )
+        viewModel.tVSocialNetworkVisibility.observe(
+            this,
+            Observer {
+                if (it) {
+                    binding.tVTeamDetSocialNetworksTitle.visibility = View.VISIBLE
+                } else {
+                    binding.tVTeamDetSocialNetworksTitle.visibility = View.GONE
+                }
+            }
+        )
+        viewModel.iBWebpageVisibility.observe(
+            this,
+            Observer {
+                if (it) {
+                    binding.imgBTeamWebPage.visibility = View.VISIBLE
+                } else {
+                    binding.imgBTeamWebPage.visibility = View.GONE
+                }
+            }
+        )
+        viewModel.iBFacebookVisibility.observe(
+            this,
+            Observer {
+                if (it) {
+                    binding.imgBTeamDetFacebook.visibility = View.VISIBLE
+                } else {
+                    binding.imgBTeamDetFacebook.visibility = View.GONE
+                }
+            }
+        )
+        viewModel.iBInstagramVisibility.observe(
+            this,
+            Observer {
+                if (it) {
+                    binding.imgBTeamDetInstagram.visibility = View.VISIBLE
+                } else {
+                    binding.imgBTeamDetInstagram.visibility = View.GONE
+                }
+            }
+        )
+        viewModel.iBTwitterVisibility.observe(
+            this,
+            Observer {
+                if (it) {
+                    binding.imgBTeamDetTwitter.visibility = View.VISIBLE
+                } else {
+                    binding.imgBTeamDetTwitter.visibility = View.GONE
+                }
+            }
+        )
+        viewModel.iBYoutubeVisibility.observe(
+            this,
+            Observer {
+                if (it) {
+                    binding.imgBTeamDetYoutube.visibility = View.VISIBLE
+                } else {
+                    binding.imgBTeamDetYoutube.visibility = View.GONE
+                }
+            }
+        )
     }
 
     private fun sendEventsInfoToAdapter(eventsInfo: List<Event>) {
@@ -121,7 +249,7 @@ class TeamDetailActivity :
     }
 
     override fun onRefresh() {
-        viewModel.onCreate(intent)
+        viewModel.onCreate(intent, this)
         binding.rVRefreshEvents.isRefreshing = false
     }
 

@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity(),
     private fun startView () {
         initLiveData()
         binding.rVMain.layoutManager = LinearLayoutManager(this)
-        viewModel.onCreate()
+        viewModel.onCreate(this)
         // Listeners
         binding.rVRefreshMain.setOnRefreshListener(this)
     }
@@ -102,7 +102,7 @@ class MainActivity : AppCompatActivity(),
     }
 
     override fun onRefresh() {
-        viewModel.onRefreshRv()
+        viewModel.onRefreshRv(this)
     }
 
     override fun onBackPressed() {

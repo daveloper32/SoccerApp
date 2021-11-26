@@ -1,6 +1,7 @@
 package com.daveloper.soccerapp.ui.viewmodel.main
 
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -9,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import com.daveloper.soccerapp.data.model.entity.Event
 import com.daveloper.soccerapp.data.model.entity.Team
 import com.daveloper.soccerapp.domain.GetTeamsInfoByLeagueUseCase
+import com.daveloper.soccerapp.domain.SaveOrUpdateTeamsOnLocalDBUseCase_Factory
 import com.daveloper.soccerapp.ui.view.team_detail_info.TeamDetailActivity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -41,11 +43,11 @@ class MainViewModel @Inject constructor(
     private val _goToXActivityWithData = MutableLiveData<IntentAndTeamData>()
     val goToXActivityWithData : LiveData<IntentAndTeamData> get() = _goToXActivityWithData
     
-    fun onCreate() {
+    fun onCreate(context: Context) {
         _progressVisibility.value = true
         viewModelScope.launch {
             val teamsInfo = getTeamsInfoByLeagueUseCase
-                .getInfo("Spanish_La_Liga")
+                .getInfo("Spanish_La_Liga", context)
             if (!teamsInfo.isNullOrEmpty()) {
                 _recyclerViewData.postValue(teamsInfo)
                 _progressVisibility.postValue(false)
@@ -53,11 +55,11 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun onRefreshRv() {
+    fun onRefreshRv(context: Context) {
         _progressVisibility.value = true
         viewModelScope.launch {
             val teamsInfo = getTeamsInfoByLeagueUseCase
-                .getInfo("Spanish_La_Liga")
+                .getInfo("Spanish_La_Liga", context)
             if (!teamsInfo.isNullOrEmpty()) {
                 _refreshRecyclerViewData.postValue(teamsInfo)
                 _progressVisibility.postValue(false)

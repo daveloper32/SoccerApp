@@ -23,6 +23,7 @@
     <string name="tV_team_det_found_year">0000</string>
     <string name="imgV_team_det_badge_cD">Team Badge</string>
     <string name="tV_team_det_next_events_title">Next Events</string>
+    <string name="tV_team_det_jersey_title">Team Jersey</string>
     <string name="imgV_team_det_jersey_cD">Team Jersey</string>
     <string name="tV_team_det_webPage_title">Webpage</string>
     <string name="tV_team_det_webPage">www.adsffsohaoiahsfo.com</string>
@@ -41,6 +42,8 @@
     <string name="tV_eventcV_vs">vs</string>
     <string name="tV_eventcV_away_team">Away Team Name</string>
 
+
+    <string name="msg_team_det_noInfo">Information not available at this time</string>
     <string name="msg_team_det_noHour">00:00:00</string>
     <string name="msg_team_det_noHour_exp">To be defined</string>
 
