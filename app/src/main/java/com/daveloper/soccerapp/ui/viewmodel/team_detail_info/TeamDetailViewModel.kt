@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.daveloper.soccerapp.R
 import com.daveloper.soccerapp.auxiliar.ext_fun.getStringResource
+import com.daveloper.soccerapp.core.LeagueAPIHelper
 import com.daveloper.soccerapp.data.model.entity.Event
 import com.daveloper.soccerapp.data.model.entity.Team
 import com.daveloper.soccerapp.domain.GetTeamInfoFromLocalDBUseCase
@@ -106,7 +107,6 @@ class TeamDetailViewModel @Inject constructor(
         if (teamName != null) {
             if (!teamName.isEmpty()) {
                 fillInTeamInfo(teamName, context)
-                getDataForRecyclerView (teamName, context)
             } else {
                 _goToXActivity.value = MainActivity::class.java
                 _showInfoMessage.value = R.string.iM_team_det_initError
@@ -182,6 +182,8 @@ class TeamDetailViewModel @Inject constructor(
                 _iBYoutubeVisibility.postValue(false)
             }
             _progressVisibility.postValue(false)
+
+            getDataForRecyclerView (teamName, context)
         }
     }
 
@@ -191,10 +193,16 @@ class TeamDetailViewModel @Inject constructor(
     ) {
         _progressEventsVisibility.value = true
         viewModelScope.launch {
-            val eventsInfo = getXNextTeamEventsInfoUseCase
-                .getInfo(teamName = teamName, context = context)
+            val eventsInfo = teamInfo.league?.let {
+                getAPILeagueID(
+                    it
+                )
+            }?.let {
+                getXNextTeamEventsInfoUseCase
+                    .getInfo(teamName = teamName, context = context, idLeague = it)
+            }
             if (!eventsInfo.isNullOrEmpty()) {
-                _recyclerViewData.postValue(eventsInfo)
+                _recyclerViewData.postValue(eventsInfo!!)
                 _progressEventsVisibility.postValue(false)
             }
         }
@@ -241,6 +249,15 @@ class TeamDetailViewModel @Inject constructor(
     fun onYoutubeWebpageTeamClicked() {
         if (!teamInfo.youtubeLink.isNullOrEmpty()){
             _linkToYoutubeWebpage.postValue(Intent(Intent.ACTION_VIEW, Uri.parse("https://${teamInfo.youtubeLink!!}")))
+        }
+    }
+
+    private fun getAPILeagueID(league: String): Int {
+        when (league) {
+            LeagueAPIHelper.getSpanishLeagueN() -> return LeagueAPIHelper.getSpanishLeagueID()
+            LeagueAPIHelper.getEnglishLeagueN() -> return LeagueAPIHelper.getEmglishLeagueID()
+            LeagueAPIHelper.getItalianLeagueN() -> return LeagueAPIHelper.getItalianLeagueID()
+            else -> return LeagueAPIHelper.getSpanishLeagueID()
         }
     }
 }

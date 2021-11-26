@@ -1,12 +1,10 @@
 package com.daveloper.soccerapp.data.network
 
 import android.annotation.SuppressLint
-import com.daveloper.soccerapp.core.LeagueIdsFromAPI
+import com.daveloper.soccerapp.core.LeagueAPIHelper
 import com.daveloper.soccerapp.core.RetrofitHelper
 import com.daveloper.soccerapp.data.model.entity.Event
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.*
@@ -24,7 +22,7 @@ class EventsInfoService @Inject constructor(
     @SuppressLint("SimpleDateFormat")
     suspend fun getNextXEventsFromTeam (
         numNextEvents: Int = 5,
-        idLeague: Int = LeagueIdsFromAPI.getSpanishLeagueID(),
+        idLeague: Int = LeagueAPIHelper.getSpanishLeagueID(),
         teamName: String
     ) : List<Event>
     {
@@ -77,7 +75,7 @@ class EventsInfoService @Inject constructor(
         }
     }
     private suspend fun getOneRoundOfEvents (
-        idLeague: Int = LeagueIdsFromAPI.getSpanishLeagueID(),
+        idLeague: Int = LeagueAPIHelper.getSpanishLeagueID(),
         round: Int,
         year: Int
     ) : List<Event> {

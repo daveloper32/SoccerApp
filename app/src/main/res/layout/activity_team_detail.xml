@@ -123,6 +123,7 @@
                     android:fontFamily="sans-serif-smallcaps"
                     android:gravity="center_horizontal"
                     android:text="@string/tV_team_det_next_events_title"
+                    android:textColor="@color/black"
                     android:textSize="20sp" />
 
                 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout

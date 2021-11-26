@@ -2,7 +2,7 @@ package com.daveloper.soccerapp.domain
 
 
 import android.content.Context
-import com.daveloper.soccerapp.core.LeagueIdsFromAPI
+import com.daveloper.soccerapp.core.LeagueAPIHelper
 import com.daveloper.soccerapp.data.model.entity.Event
 import com.daveloper.soccerapp.data.model.repository.NextTeamEventsDataRepository
 import javax.inject.Inject
@@ -12,7 +12,7 @@ class GetXNextTeamEventsInfoUseCase @Inject constructor(
 ) {
     suspend fun getInfo (
         numNextEvents: Int = 5,
-        idLeague: Int = LeagueIdsFromAPI.getSpanishLeagueID(),
+        idLeague: Int = LeagueAPIHelper.getSpanishLeagueID(),
         teamName: String,
         context: Context
     ) : List<Event> {

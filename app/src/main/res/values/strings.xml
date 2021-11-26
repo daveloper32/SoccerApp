@@ -2,9 +2,7 @@
     <string name="app_name">SoccerApp</string>
 
     <string name="tB_imgV_main_logo_cD">Soccer App Logo</string>
-    <string name="tB_tV_main_op1">Spanish La Liga</string>
-    <string name="tB_tV_main_op2">English Premier League</string>
-    <string name="tB_tV_main_op3">Italian Serie A</string>
+    <string name="tB_sP_main_msg">Choose a League</string>
 
     <string name="imgV_teamcV_badge_cD">Team Badge</string>
     <string name="tV_teamcV_name">Team Name</string>

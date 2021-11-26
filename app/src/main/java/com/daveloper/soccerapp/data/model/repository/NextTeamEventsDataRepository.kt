@@ -1,7 +1,7 @@
 package com.daveloper.soccerapp.data.model.repository
 
 import android.content.Context
-import com.daveloper.soccerapp.core.LeagueIdsFromAPI
+import com.daveloper.soccerapp.core.LeagueAPIHelper
 import com.daveloper.soccerapp.data.local_database.dao.TeamDao
 import com.daveloper.soccerapp.data.local_database.database.RoomTeamsDatabase
 import com.daveloper.soccerapp.data.model.entity.Event
@@ -19,7 +19,7 @@ class NextTeamEventsDataRepository @Inject constructor(
 
     suspend fun getXNextTeamEventsInfo (
         numNextEvents: Int = 5,
-        idLeague: Int = LeagueIdsFromAPI.getSpanishLeagueID(),
+        idLeague: Int = LeagueAPIHelper.getSpanishLeagueID(),
         teamName: String
     ): List<Event> {
         return eventsInfoService.getNextXEventsFromTeam(

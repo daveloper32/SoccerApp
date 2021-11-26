@@ -7,10 +7,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.daveloper.soccerapp.data.model.entity.Event
+import com.daveloper.soccerapp.core.LeagueAPIHelper
 import com.daveloper.soccerapp.data.model.entity.Team
 import com.daveloper.soccerapp.domain.GetTeamsInfoByLeagueUseCase
-import com.daveloper.soccerapp.domain.SaveOrUpdateTeamsOnLocalDBUseCase_Factory
 import com.daveloper.soccerapp.ui.view.team_detail_info.TeamDetailActivity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -20,11 +19,9 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val getTeamsInfoByLeagueUseCase: GetTeamsInfoByLeagueUseCase
 ): ViewModel() {
-    
-    private val spanishLeague = "Spanish_La_Liga"
-    private val englishLeague = "English_Premier_League"
-    private val italianLeague = "Italian_Serie_A"
-    
+
+    private var leagues = LeagueAPIHelper.getAllLeaguesN()
+
     private val _progressVisibility = MutableLiveData<Boolean>()
     val progressVisibility : LiveData<Boolean> get() = _progressVisibility
     
@@ -33,6 +30,9 @@ class MainViewModel @Inject constructor(
     
     private val _goToXActivity = MutableLiveData<Class<out AppCompatActivity?>>()
     val goToXActivity : LiveData<Class<out AppCompatActivity?>> get() = _goToXActivity
+
+    private val _spinnerData = MutableLiveData<List<String>>()
+    val spinnerData : LiveData<List<String>> get() = _spinnerData
 
     private val _recyclerViewData = MutableLiveData<List<Team>>()
     val recyclerViewData : LiveData<List<Team>> get() = _recyclerViewData
@@ -43,11 +43,15 @@ class MainViewModel @Inject constructor(
     private val _goToXActivityWithData = MutableLiveData<IntentAndTeamData>()
     val goToXActivityWithData : LiveData<IntentAndTeamData> get() = _goToXActivityWithData
     
-    fun onCreate(context: Context) {
+    fun onCreate(
+        context: Context,
+        league: String = LeagueAPIHelper.getSpanishLeagueN()
+    ) {
         _progressVisibility.value = true
+        _spinnerData.value = leagues
         viewModelScope.launch {
             val teamsInfo = getTeamsInfoByLeagueUseCase
-                .getInfo("Spanish_La_Liga", context)
+                .getInfo(getAPILeagueName(league), context)
             if (!teamsInfo.isNullOrEmpty()) {
                 _recyclerViewData.postValue(teamsInfo)
                 _progressVisibility.postValue(false)
@@ -55,11 +59,14 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun onRefreshRv(context: Context) {
+    fun onRefreshRv(
+        context: Context,
+        league: String = LeagueAPIHelper.getSpanishLeagueN()
+    ) {
         _progressVisibility.value = true
         viewModelScope.launch {
             val teamsInfo = getTeamsInfoByLeagueUseCase
-                .getInfo("Spanish_La_Liga", context)
+                .getInfo(getAPILeagueName(league), context)
             if (!teamsInfo.isNullOrEmpty()) {
                 _refreshRecyclerViewData.postValue(teamsInfo)
                 _progressVisibility.postValue(false)
@@ -73,6 +80,15 @@ class MainViewModel @Inject constructor(
                 TeamDetailActivity::class.java,
                 teamSelected
             )
+    }
+
+    private fun getAPILeagueName(league: String): String {
+        when (league) {
+            LeagueAPIHelper.getSpanishLeagueN() -> return LeagueAPIHelper.getSpanishLeague()
+            LeagueAPIHelper.getEnglishLeagueN() -> return LeagueAPIHelper.getEnglishLeague()
+            LeagueAPIHelper.getItalianLeagueN() -> return LeagueAPIHelper.getItalianLeague()
+            else -> return LeagueAPIHelper.getSpanishLeague()
+        }
     }
 }
 
