@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.view.team_detail_info.TeamDetailActivity">
 
-    <include layout="@layout/team_detail_toolbar"
+    <include
         android:id="@+id/tB_team_detail"
+        layout="@layout/team_detail_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -22,44 +24,39 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
+            android:layout_margin="16dp"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/lL_team_det_maininfo"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="5dp"
-                android:orientation="vertical"
-
-                app:layout_constraintBaseline_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:layout_height="match_parent">
 
                 <TextView
                     android:id="@+id/tV_team_det_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="16dp"
                     android:fontFamily="sans-serif-smallcaps"
-                    android:text="@string/tV_team_det_name"
                     android:gravity="center_horizontal"
-                    android:textSize="34sp" />
+                    android:text="@string/tV_team_det_name"
+                    android:textSize="34sp"
+                    app:layout_constraintBottom_toTopOf="@+id/imgV_team_det_badge"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/imgV_team_det_badge"
                     android:layout_width="150dp"
                     android:layout_height="150dp"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="16dp"
                     android:contentDescription="@string/imgV_team_det_badge_cD"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/tV_team_det_description"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/lL_team_det_maininfo"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:srcCompat="@drawable/ic_soccer_ball" />
 
                 <TextView
@@ -67,216 +64,238 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginBottom="5dp"
+                    android:layout_marginBottom="8dp"
                     android:fontFamily="sans-serif"
-                    android:text="@string/tV_team_det_description"
                     android:gravity="center_horizontal"
-                    android:textSize="16sp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    android:orientation="horizontal"
-                    android:gravity="center_horizontal">
-
-                    <TextView
-                        android:id="@+id/tV_team_det_found_year_sub"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:fontFamily="sans-serif-black"
-                        android:text="@string/tV_team_det_found_year_sub"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:id="@+id/tV_team_det_found_year"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:fontFamily="sans-serif"
-                        android:text="@string/tV_team_det_found_year"
-                        android:textSize="16sp" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="25dp"
-                android:background="@color/black_light"
-                android:orientation="vertical"
-                android:paddingBottom="10dp">
+                    android:text="@string/tV_team_det_description"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toTopOf="@+id/tV_team_det_found_year_sub"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
 
                 <TextView
-                    android:id="@+id/tV_team_det_next_events_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:fontFamily="sans-serif-smallcaps"
-                    android:gravity="center_horizontal"
-                    android:text="@string/tV_team_det_next_events_title"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
-
-                <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-                    android:id="@+id/rV_refresh_events"
-                    android:layout_width="match_parent"
-                    android:layout_height="350dp"
-                    android:layout_below="@id/tV_team_det_next_events_title"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginEnd="5dp"
-                    android:layout_marginBottom="5dp">
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rV_events"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
-                </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-                <ProgressBar
-                    android:id="@+id/pgsB_events"
-                    style="?android:attr/progressBarStyle"
+                    android:id="@+id/tV_team_det_found_year_sub"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:visibility="gone" />
-            </RelativeLayout>
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginBottom="24dp"
+                    android:fontFamily="sans-serif-black"
+                    android:text="@string/tV_team_det_found_year_sub"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toTopOf="@+id/next_events"
+                    app:layout_constraintEnd_toStartOf="@+id/tV_team_det_found_year"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent" />
 
-            <TextView
-                android:id="@+id/tV_team_det_jersey_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:fontFamily="sans-serif-smallcaps"
-                android:text="@string/tV_team_det_jersey_title"
-                android:layout_marginBottom="10dp"
-                android:textSize="20sp" />
+                <TextView
+                    android:id="@+id/tV_team_det_found_year"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginBottom="24dp"
+                    android:fontFamily="sans-serif"
+                    android:text="@string/tV_team_det_found_year"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toTopOf="@+id/next_events"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/tV_team_det_found_year_sub" />
 
-            <ImageView
-                android:id="@+id/imgV_team_det_jersey"
-                android:layout_width="wrap_content"
-                android:layout_height="200dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="20dp"
-                android:contentDescription="@string/imgV_team_det_jersey_cD"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/lL_team_det_maininfo"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_soccer_ball" />
+                <RelativeLayout
+                    android:id="@+id/next_events"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp"
+                    android:background="@color/black_light"
+                    android:orientation="vertical"
+                    android:paddingBottom="10dp"
+                    app:layout_constraintBottom_toTopOf="@+id/tV_team_det_jersey_title"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="50dp"
-                android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/tV_team_det_next_events_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:fontFamily="sans-serif-smallcaps"
+                        android:gravity="center_horizontal"
+                        android:text="@string/tV_team_det_next_events_title"
+                        android:textColor="@color/black"
+                        android:textSize="20sp" />
+
+                    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                        android:id="@+id/rV_refresh_events"
+                        android:layout_width="match_parent"
+                        android:layout_height="350dp"
+                        android:layout_below="@id/tV_team_det_next_events_title"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginBottom="5dp">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rV_events"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+                    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+                    <ProgressBar
+                        android:id="@+id/pgsB_events"
+                        style="?android:attr/progressBarStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:visibility="gone" />
+
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/tV_team_det_jersey_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:fontFamily="sans-serif-smallcaps"
+                    android:gravity="center_horizontal"
+                    android:text="@string/tV_team_det_jersey_title"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toTopOf="@id/imgV_team_det_jersey"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <ImageView
+                    android:id="@+id/imgV_team_det_jersey"
+                    android:layout_width="wrap_content"
+                    android:layout_height="200dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="24dp"
+                    android:contentDescription="@string/imgV_team_det_jersey_cD"
+                    app:layout_constraintBottom_toTopOf="@id/tV_team_det_webPage_title"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:srcCompat="@drawable/ic_soccer_ball" />
 
                 <TextView
                     android:id="@+id/tV_team_det_webPage_title"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginBottom="5dp"
+                    android:layout_marginBottom="8dp"
                     android:fontFamily="sans-serif-smallcaps"
                     android:gravity="center_horizontal"
                     android:text="@string/tV_team_det_webPage_title"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toTopOf="@+id/tV_team_det_webPage"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
 
                 <TextView
                     android:id="@+id/tV_team_det_webPage"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginBottom="5dp"
                     android:fontFamily="sans-serif"
                     android:gravity="center_horizontal"
                     android:text="@string/tV_team_det_webPage"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toTopOf="@+id/imgB_team_webPage"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
 
                 <ImageButton
                     android:id="@+id/imgB_team_webPage"
 
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="20dp"
+                    android:layout_marginBottom="8dp"
                     android:background="@color/invisible"
                     android:contentDescription="@string/imgB_team_webPage_cD"
+                    app:layout_constraintBottom_toTopOf="@+id/tV_team_det_social_networks_title"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:srcCompat="@drawable/ic_ir_sitio_web" />
 
                 <TextView
                     android:id="@+id/tV_team_det_social_networks_title"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginBottom="5dp"
+                    android:layout_marginBottom="8dp"
                     android:fontFamily="sans-serif-smallcaps"
                     android:gravity="center_horizontal"
                     android:text="@string/tV_team_det_social_networks_title"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toTopOf="@+id/imgB_team_det_facebook"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
 
+                <ImageButton
+                    android:id="@+id/imgB_team_det_facebook"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="@dimen/large_margin_bottom"
+                    android:layout_weight="1"
+                    android:background="@color/invisible"
+                    android:contentDescription="@string/imgB_team_det_facebook_cD"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/imgB_team_det_instagram"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_chainStyle="spread"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:srcCompat="@drawable/ic_logo_facebook" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                <ImageButton
+                    android:id="@+id/imgB_team_det_instagram"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="@dimen/large_margin_bottom"
+                    android:layout_weight="1"
+                    android:background="@color/invisible"
+                    android:contentDescription="@string/imgB_team_det_instagram_cD"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/imgB_team_det_twitter"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/imgB_team_det_facebook"
+                    app:srcCompat="@drawable/ic_logo_instagram" />
 
-                    <ImageButton
-                        android:id="@+id/imgB_team_det_facebook"
-                        android:layout_width="0dp"
-                        android:layout_height="50dp"
-                        android:layout_marginStart="5dp"
-                        android:layout_weight="1"
-                        android:background="@color/invisible"
-                        android:contentDescription="@string/imgB_team_det_facebook_cD"
-                        app:srcCompat="@drawable/ic_logo_facebook" />
+                <ImageButton
+                    android:id="@+id/imgB_team_det_twitter"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="@dimen/large_margin_bottom"
+                    android:layout_weight="1"
+                    android:background="@color/invisible"
+                    android:contentDescription="@string/imgB_team_det_twitter_cD"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/imgB_team_det_youtube"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/imgB_team_det_instagram"
+                    app:srcCompat="@drawable/ic_twitter_logo" />
 
-                    <ImageButton
-                        android:id="@+id/imgB_team_det_instagram"
-                        android:layout_width="0dp"
-                        android:layout_height="50dp"
-                        android:layout_marginStart="5dp"
-                        android:layout_weight="1"
-                        android:background="@color/invisible"
-                        android:contentDescription="@string/imgB_team_det_instagram_cD"
-                        app:srcCompat="@drawable/ic_logo_instagram" />
+                <ImageButton
+                    android:id="@+id/imgB_team_det_youtube"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="@dimen/large_margin_bottom"
+                    android:layout_weight="1"
+                    android:background="@color/invisible"
+                    android:contentDescription="@string/imgB_team_det_youtube_cD"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/imgB_team_det_twitter"
+                    app:srcCompat="@drawable/ic_logo_youtube" />
 
-                    <ImageButton
-                        android:id="@+id/imgB_team_det_twitter"
-                        android:layout_width="0dp"
-                        android:layout_height="50dp"
-                        android:layout_marginStart="5dp"
-                        android:layout_weight="1"
-                        android:background="@color/invisible"
-                        android:contentDescription="@string/imgB_team_det_twitter_cD"
-                        app:srcCompat="@drawable/ic_twitter_logo" />
-
-                    <ImageButton
-                        android:id="@+id/imgB_team_det_youtube"
-                        android:layout_width="0dp"
-                        android:layout_height="50dp"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginEnd="5dp"
-                        android:layout_weight="1"
-                        android:background="@color/invisible"
-                        android:contentDescription="@string/imgB_team_det_youtube_cD"
-                        app:srcCompat="@drawable/ic_logo_youtube" />
-                </LinearLayout>
-            </LinearLayout>
-
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
-
 
     </ScrollView>
 
@@ -290,6 +309,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
