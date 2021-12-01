@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.daveloper.soccerapp.R
 import com.daveloper.soccerapp.auxiliar.ext_fun.loadImage
 import com.daveloper.soccerapp.data.model.entity.Team
+import com.daveloper.soccerapp.databinding.TeamCardViewBinding
 
 class TeamsAdapter(
     private val teamsList: List<Team>,
@@ -16,23 +17,16 @@ class TeamsAdapter(
 ) : RecyclerView.Adapter<TeamsAdapter.ViewHolder>()
 {
     inner class ViewHolder (
-        view: View
-    ) : RecyclerView.ViewHolder(view),
+        val binding: TeamCardViewBinding
+    ) : RecyclerView.ViewHolder(binding.root),
             View.OnClickListener
     {
-        val imgV_teamcV_badge: ImageView
-        val tV_teamcV_name: TextView
-        val tV_teamcV_stadium: TextView
-
         init {
-            imgV_teamcV_badge = view.findViewById(R.id.imgV_teamcV_badge)
-            tV_teamcV_name = view.findViewById(R.id.tV_teamcV_name)
-            tV_teamcV_stadium = view.findViewById(R.id.tV_teamcV_stadium)
-            view.setOnClickListener(this)
+            binding.root.setOnClickListener(this)
         }
 
         fun getSelectedTeam () : String {
-            return tV_teamcV_name.text.toString()
+            return binding.tVTeamcVName.text.toString()
         }
 
         override fun onClick(v: View?) {
@@ -46,16 +40,19 @@ class TeamsAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view: View = LayoutInflater
-            .from(parent.context)
-            .inflate(R.layout.team_card_view, parent, false)
+        val view = TeamCardViewBinding
+            .inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        teamsList.get(position).teamBadge?.let { holder.imgV_teamcV_badge.loadImage(it,false) }
-        holder.tV_teamcV_name.text = teamsList.get(position).name
-        holder.tV_teamcV_stadium.text = teamsList.get(position).stadiumName
+        teamsList.get(position).teamBadge?.let { holder.binding.imgVTeamcVBadge.loadImage(it,false) }
+        holder.binding.tVTeamcVName.text = teamsList.get(position).name
+        holder.binding.tVTeamcVStadium.text = teamsList.get(position).stadiumName
     }
 
     override fun getItemCount(): Int {
