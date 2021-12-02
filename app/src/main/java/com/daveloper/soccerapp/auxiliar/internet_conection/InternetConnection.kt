@@ -21,7 +21,10 @@ class InternetConnection @Inject constructor() {
 
         if (networkCapabilities != null) {
             return when {
+                // WIFI Network
                 networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+                // MOBILE DATA Network
+                networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
                 else -> false
             }
         } else {
