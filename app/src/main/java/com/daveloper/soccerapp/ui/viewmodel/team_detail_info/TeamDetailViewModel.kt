@@ -1,5 +1,6 @@
 package com.daveloper.soccerapp.ui.viewmodel.team_detail_info
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -10,6 +11,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.daveloper.soccerapp.R
 import com.daveloper.soccerapp.auxiliar.ext_fun.getStringResource
+import com.daveloper.soccerapp.auxiliar.internet_conection.InternetConnection
 import com.daveloper.soccerapp.core.LeagueAPIHelper
 import com.daveloper.soccerapp.data.model.entity.Event
 import com.daveloper.soccerapp.data.model.entity.Team
@@ -22,11 +24,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TeamDetailViewModel @Inject constructor(
+    private val internetConnection: InternetConnection,
     private val getXNextTeamEventsInfoUseCase: GetXNextTeamEventsInfoUseCase,
     private val getTeamInfoFromLocalDBUseCase: GetTeamInfoFromLocalDBUseCase
 ): ViewModel() {
 
     private lateinit var teamInfo: Team
+
+    private lateinit var teamName: String
 
     private val _progressVisibility = MutableLiveData<Boolean>()
     val progressVisibility : LiveData<Boolean> get() = _progressVisibility
@@ -45,6 +50,9 @@ class TeamDetailViewModel @Inject constructor(
 
     private val _recyclerViewData = MutableLiveData<List<Event>>()
     val recyclerViewData : LiveData<List<Event>> get() = _recyclerViewData
+
+    private val _iBReloadEventsVisibility = MutableLiveData<Boolean>()
+    val iBReloadEventsVisibility : LiveData<Boolean> get() = _iBReloadEventsVisibility
     
     private val _setTextTeamName = MutableLiveData<String>()
     val setTextTeamName : LiveData<String> get() = _setTextTeamName
@@ -102,8 +110,7 @@ class TeamDetailViewModel @Inject constructor(
         context: Context
     ) {
         _progressVisibility.value = true
-
-        val teamName = getTeamName(intent)
+        teamName = getTeamName(intent)!!
         if (teamName != null) {
             if (!teamName.isEmpty()) {
                 fillInTeamInfo(teamName, context)
@@ -187,39 +194,56 @@ class TeamDetailViewModel @Inject constructor(
         }
     }
 
+    @SuppressLint("NullSafeMutableLiveData")
     private fun getDataForRecyclerView(
         teamName: String,
         context: Context
     ) {
         _progressEventsVisibility.value = true
         viewModelScope.launch {
+            val internetConnectionState = internetConnection.isConnected(context)
             val eventsInfo = teamInfo.league?.let {
                 getAPILeagueID(
                     it
                 )
             }?.let {
                 getXNextTeamEventsInfoUseCase
-                    .getInfo(teamName = teamName, context = context, idLeague = it)
+                    .getInfo(teamName = teamName,
+                        context = context,
+                        idLeague = it,
+                        internetConnection = internetConnectionState
+                    )
             }
             if (!eventsInfo.isNullOrEmpty()) {
-                _recyclerViewData.postValue(eventsInfo!!)
+                _recyclerViewData.postValue(eventsInfo)
                 _progressEventsVisibility.postValue(false)
+            } else {
+                _showInfoMessage.postValue(R.string.iM_team_det_failGetEvents)
+                _progressEventsVisibility.postValue(false)
+                _iBReloadEventsVisibility.postValue(true)
             }
         }
     }
 
-    fun getTeamName (
+    private fun getTeamName (
         intent: Intent?
     ) : String? {
-        if (intent != null) {
-            return intent.getStringExtra("data")
+        return if (intent != null) {
+            intent.getStringExtra("data")
         } else {
-            return ""
+            ""
         }
     }
 
     fun onBackClicked() {
         _goToXActivity.value = MainActivity::class.java
+    }
+
+    fun onReloadEventsClicked(
+        context: Context
+    ) {
+        getDataForRecyclerView(teamName, context)
+        _iBReloadEventsVisibility.value = false
     }
 
     fun onWebpageTeamClicked() {
@@ -253,11 +277,11 @@ class TeamDetailViewModel @Inject constructor(
     }
 
     private fun getAPILeagueID(league: String): Int {
-        when (league) {
-            LeagueAPIHelper.getSpanishLeagueN() -> return LeagueAPIHelper.getSpanishLeagueID()
-            LeagueAPIHelper.getEnglishLeagueN() -> return LeagueAPIHelper.getEmglishLeagueID()
-            LeagueAPIHelper.getItalianLeagueN() -> return LeagueAPIHelper.getItalianLeagueID()
-            else -> return LeagueAPIHelper.getSpanishLeagueID()
+        return when (league) {
+            LeagueAPIHelper.getSpanishLeagueN() -> LeagueAPIHelper.getSpanishLeagueID()
+            LeagueAPIHelper.getEnglishLeagueN() -> LeagueAPIHelper.getEmglishLeagueID()
+            LeagueAPIHelper.getItalianLeagueN() -> LeagueAPIHelper.getItalianLeagueID()
+            else -> LeagueAPIHelper.getSpanishLeagueID()
         }
     }
 }

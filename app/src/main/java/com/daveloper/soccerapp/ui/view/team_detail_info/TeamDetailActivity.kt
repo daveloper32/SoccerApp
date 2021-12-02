@@ -44,6 +44,7 @@ class TeamDetailActivity :
         viewModel.onCreate(intent, this)
         // Listeners
         binding.tBTeamDetail.tBImgVTeamDetBackicon.setOnClickListener(this)
+        binding.imgBTeamDetReloadEvents.setOnClickListener(this)
         binding.tVTeamDetWebPage.setOnClickListener(this)
         binding.imgBTeamWebPage.setOnClickListener(this)
         binding.imgBTeamDetFacebook.setOnClickListener(this)
@@ -96,6 +97,16 @@ class TeamDetailActivity :
             this,
             Observer {
                 sendEventsInfoToAdapter(it)
+            }
+        )
+        viewModel.iBReloadEventsVisibility.observe(
+            this,
+            Observer {
+                if (it) {
+                    binding.imgBTeamDetReloadEvents.visibility = View.VISIBLE
+                } else {
+                    binding.imgBTeamDetReloadEvents.visibility = View.GONE
+                }
             }
         )
         viewModel.setTextTeamName.observe(
@@ -237,13 +248,13 @@ class TeamDetailActivity :
             // Toolbar
             binding.tBTeamDetail.tBImgVTeamDetBackicon.id -> viewModel.onBackClicked()
             // Activity
+            binding.imgBTeamDetReloadEvents.id -> viewModel.onReloadEventsClicked(this)
             binding.tVTeamDetWebPage.id -> viewModel.onWebpageTeamClicked()
             binding.imgBTeamWebPage.id -> viewModel.onWebpageTeamClicked()
             binding.imgBTeamDetFacebook.id -> viewModel.onFacebookWebpageTeamClicked()
             binding.imgBTeamDetInstagram.id -> viewModel.onInstagramWebpageTeamClicked()
             binding.imgBTeamDetTwitter.id -> viewModel.onTwitterWebpageTeamClicked()
             binding.imgBTeamDetYoutube.id -> viewModel.onYoutubeWebpageTeamClicked()
-
         }
     }
 

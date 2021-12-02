@@ -57,7 +57,7 @@
                     app:layout_constraintBottom_toTopOf="@+id/tV_team_det_description"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:srcCompat="@drawable/ic_soccer_ball" />
+                    app:srcCompat="@drawable/ic_soccer_app_round" />
 
                 <TextView
                     android:id="@+id/tV_team_det_description"
@@ -155,6 +155,21 @@
                         android:visibility="gone" />
 
                 </RelativeLayout>
+
+                <ImageButton
+                    android:id="@+id/imgB_team_det_reload_events"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:backgroundTint="@color/invisible"
+                    android:contentDescription="@string/imgB_team_det_reload_events_cD"
+                    android:scaleType="fitXY"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="@+id/next_events"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/next_events"
+                    app:srcCompat="@android:drawable/stat_notify_sync"
+                    app:tint="@color/red_500" />
 
                 <TextView
                     android:id="@+id/tV_team_det_jersey_title"

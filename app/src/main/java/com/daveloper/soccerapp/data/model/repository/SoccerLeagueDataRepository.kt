@@ -24,6 +24,17 @@ class SoccerLeagueDataRepository @Inject constructor(
         return teamsInfoAPI.searchTeamsInfoByLeague(soccerLeague)
     }
 
+    suspend fun getAllTeamsInfoFromALeagueInLocalDB(
+        league: String,
+        context: Context
+    ): List<Team> {
+        return  withContext(Dispatchers.IO) {
+            dB = RoomTeamsDatabase.getDatabase(context)
+            teamDao = dB.teamDao()
+            teamDao.getTeamsDataFromXLeague(league)
+        }
+    }
+
     suspend fun saveInfoAPIinLocalDB (
         teamsToAdd: List<Team>,
         context: Context

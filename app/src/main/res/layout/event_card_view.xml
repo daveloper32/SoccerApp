@@ -69,7 +69,7 @@
             app:layout_constraintBottom_toTopOf="@+id/imgV_eventcV_away_badge"
             app:layout_constraintStart_toEndOf="@+id/divider"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_soccer_ball" />
+            app:srcCompat="@drawable/ic_soccer_app_round" />
 
         <ImageView
             android:id="@+id/imgV_eventcV_away_badge"
@@ -82,7 +82,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/imgV_eventcV_home_badge"
             app:layout_constraintStart_toStartOf="@+id/imgV_eventcV_home_badge"
-            app:srcCompat="@drawable/ic_soccer_ball" />
+            app:srcCompat="@drawable/ic_soccer_app_round" />
 
         <TextView
             android:id="@+id/tV_eventcV_home_team"

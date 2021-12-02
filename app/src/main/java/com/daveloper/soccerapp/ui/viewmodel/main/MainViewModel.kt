@@ -1,11 +1,14 @@
 package com.daveloper.soccerapp.ui.viewmodel.main
 
+import android.annotation.SuppressLint
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.daveloper.soccerapp.R
+import com.daveloper.soccerapp.auxiliar.internet_conection.InternetConnection
 import com.daveloper.soccerapp.core.LeagueAPIHelper
 import com.daveloper.soccerapp.data.model.entity.IntentAndTeamData
 import com.daveloper.soccerapp.data.model.entity.Team
@@ -19,6 +22,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
+    private val internetConnection: InternetConnection,
     private val getTeamsInfoByLeagueUseCase: GetTeamsInfoByLeagueUseCase,
     private val saveSelectedLeagueUseCase: SaveSelectedLeagueUseCase,
     private val getSavedSelectedLeagueUseCase: GetSavedSelectedLeagueUseCase
@@ -44,12 +48,15 @@ class MainViewModel @Inject constructor(
     private val _recyclerViewData = MutableLiveData<List<Team>>()
     val recyclerViewData : LiveData<List<Team>> get() = _recyclerViewData
 
+    private val _iBReloadTeamsVisibility = MutableLiveData<Boolean>()
+    val iBReloadTeamsVisibility : LiveData<Boolean> get() = _iBReloadTeamsVisibility
+
     private val _refreshRecyclerViewData = MutableLiveData<List<Team>>()
     val refreshRecyclerViewData : LiveData<List<Team>> get() = _refreshRecyclerViewData
 
     private val _goToXActivityWithData = MutableLiveData<IntentAndTeamData>()
     val goToXActivityWithData : LiveData<IntentAndTeamData> get() = _goToXActivityWithData
-    
+
     fun onCreate(
         context: Context
     ) {
@@ -58,12 +65,7 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             val league = getSavedSelectedLeagueUseCase.getData(context)
             _setSpinnerPosition.postValue(getSpinnerIndex (league))
-            val teamsInfo = getTeamsInfoByLeagueUseCase
-                .getInfo(getAPILeagueName(league), context)
-            if (!teamsInfo.isNullOrEmpty()) {
-                _recyclerViewData.postValue(teamsInfo)
-                _progressVisibility.postValue(false)
-            }
+            getDataToFillRecyclerView (context, league)
         }
     }
 
@@ -73,13 +75,33 @@ class MainViewModel @Inject constructor(
         _progressVisibility.value = true
         viewModelScope.launch {
             val league = getSavedSelectedLeagueUseCase.getData(context)
-            val teamsInfo = getTeamsInfoByLeagueUseCase
-                .getInfo(getAPILeagueName(league), context)
-            if (!teamsInfo.isNullOrEmpty()) {
-                _refreshRecyclerViewData.postValue(teamsInfo)
-                _progressVisibility.postValue(false)
-            }
+            getDataToFillRecyclerView (context, league)
         }
+    }
+
+    @SuppressLint("NullSafeMutableLiveData")
+    private suspend fun getDataToFillRecyclerView(
+        context: Context,
+        league: String
+    ) {
+        val internetConnectionState = internetConnection.isConnected(context)
+        val teamsInfo = getTeamsInfoByLeagueUseCase
+            .getInfo(getAPILeagueName(league), context, internetConnectionState)
+        if (!teamsInfo.isNullOrEmpty()) {
+            _recyclerViewData.postValue(teamsInfo)
+            _progressVisibility.postValue(false)
+        } else {
+            _showInfoMessage.postValue(R.string.iM_main_failGetTeams)
+            _progressVisibility.postValue(false)
+            _iBReloadTeamsVisibility.value = true
+        }
+    }
+
+    fun onReloadTeamsClicked(
+        context: Context
+    ) {
+        onRefreshRv(context)
+        _iBReloadTeamsVisibility.value = false
     }
 
     fun onTeamClicked(teamSelected: String) {
@@ -91,20 +113,20 @@ class MainViewModel @Inject constructor(
     }
 
     private fun getAPILeagueName(league: String): String {
-        when (league) {
-            LeagueAPIHelper.getSpanishLeagueN() -> return LeagueAPIHelper.getSpanishLeague()
-            LeagueAPIHelper.getEnglishLeagueN() -> return LeagueAPIHelper.getEnglishLeague()
-            LeagueAPIHelper.getItalianLeagueN() -> return LeagueAPIHelper.getItalianLeague()
-            else -> return LeagueAPIHelper.getSpanishLeague()
+        return when (league) {
+            LeagueAPIHelper.getSpanishLeagueN() -> LeagueAPIHelper.getSpanishLeague()
+            LeagueAPIHelper.getEnglishLeagueN() -> LeagueAPIHelper.getEnglishLeague()
+            LeagueAPIHelper.getItalianLeagueN() -> LeagueAPIHelper.getItalianLeague()
+            else -> LeagueAPIHelper.getSpanishLeague()
         }
     }
 
     private fun getSpinnerIndex(league: String): Int {
-        when (league) {
-            LeagueAPIHelper.getSpanishLeagueN() -> return 0
-            LeagueAPIHelper.getEnglishLeagueN() -> return 1
-            LeagueAPIHelper.getItalianLeagueN() -> return 2
-            else -> return 0
+        return when (league) {
+            LeagueAPIHelper.getSpanishLeagueN() -> 0
+            LeagueAPIHelper.getEnglishLeagueN() -> 1
+            LeagueAPIHelper.getItalianLeagueN() -> 2
+            else -> 0
         }
     }
 

@@ -13,17 +13,22 @@ class GetXNextTeamEventsInfoUseCase @Inject constructor(
         numNextEvents: Int = 5,
         idLeague: Int = LeagueAPIHelper.getSpanishLeagueID(),
         teamName: String,
-        context: Context
-    ) : List<Event> {
-        val data =  repository.getXNextTeamEventsInfo(
-            numNextEvents,
-            idLeague,
-            teamName
-        )
-        for (event in data) {
-            event.homeTeamBadge = event.homeTeam?.let { repository.getBadgeImageTeam(it, context) }
-            event.awayTeamBadge = event.awayTeam?.let { repository.getBadgeImageTeam(it, context) }
+        context: Context,
+        internetConnection: Boolean
+    ) : List<Event>? {
+        if (internetConnection) {
+            val data =  repository.getXNextTeamEventsInfo(
+                numNextEvents,
+                idLeague,
+                teamName
+            )
+            for (event in data) {
+                event.homeTeamBadge = event.homeTeam?.let { repository.getBadgeImageTeam(it, context) }
+                event.awayTeamBadge = event.awayTeam?.let { repository.getBadgeImageTeam(it, context) }
+            }
+            return data
+        } else {
+            return null
         }
-        return data
     }
 }

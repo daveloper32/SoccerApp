@@ -23,6 +23,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : AppCompatActivity(),
         TeamsAdapter.OnItemClickListener,
         AdapterView.OnItemSelectedListener,
+        View.OnClickListener,
         SwipeRefreshLayout.OnRefreshListener
 {
     // Init Vars
@@ -46,6 +47,7 @@ class MainActivity : AppCompatActivity(),
         viewModel.onCreate(this)
         // Listeners
         binding.tBMain.spinner.onItemSelectedListener = this
+        binding.imgBMainReloadTeams.setOnClickListener(this)
         binding.rVRefreshMain.setOnRefreshListener(this)
 
     }
@@ -88,6 +90,16 @@ class MainActivity : AppCompatActivity(),
                     it
                 )
                 binding.tBMain.spinner.adapter = leagueAdapter
+            }
+        )
+        viewModel.iBReloadTeamsVisibility.observe(
+            this,
+            Observer {
+                if (it) {
+                    binding.imgBMainReloadTeams.visibility = View.VISIBLE
+                } else {
+                    binding.imgBMainReloadTeams.visibility = View.GONE
+                }
             }
         )
         viewModel.recyclerViewData.observe(
@@ -140,5 +152,12 @@ class MainActivity : AppCompatActivity(),
     }
 
     override fun onNothingSelected(p0: AdapterView<*>?) {
+    }
+
+    override fun onClick(v: View?) {
+        val idSelected: Int = v!!.id
+        when (idSelected) {
+            binding.imgBMainReloadTeams.id -> viewModel.onReloadTeamsClicked(this)
+        }
     }
 }
