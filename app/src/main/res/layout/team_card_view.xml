@@ -1,84 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_alignParentTop="false"
-    android:layout_margin="7dp"
+    android:layout_margin="8dp"
     app:cardCornerRadius="2dp"
     app:cardElevation="5dp">
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:elevation="100dp"
-        android:padding="15dp">
+        android:layout_margin="8dp"
+        android:paddingStart="8dp"
+        android:paddingTop="16dp"
+        android:paddingEnd="8dp"
+        android:paddingBottom="16dp">
 
         <ImageView
             android:id="@+id/imgV_teamcV_badge"
             android:layout_width="110dp"
             android:layout_height="110dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentBottom="false"
             android:layout_gravity="center_vertical"
             android:layout_marginHorizontal="5dp"
             android:contentDescription="@string/imgV_teamcV_badge_cD"
             android:paddingHorizontal="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_soccer_app_round" />
 
         <TextView
             android:id="@+id/tV_teamcV_name"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="0dp"
+            android:layout_marginStart="24dp"
             android:layout_toEndOf="@id/imgV_teamcV_badge"
             android:fontFamily="sans-serif-smallcaps"
             android:text="@string/tV_teamcV_name"
-            android:textSize="34sp" />
+            android:textSize="34sp"
+            app:layout_constraintBottom_toTopOf="@+id/tV_teamcV_name_subt"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/imgV_teamcV_badge"
+            app:layout_constraintTop_toTopOf="@+id/imgV_teamcV_badge" />
 
         <TextView
             android:id="@+id/tV_teamcV_name_subt"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tV_teamcV_name"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="15dp"
             android:layout_marginBottom="5dp"
-            android:layout_toEndOf="@id/imgV_teamcV_badge"
             android:fontFamily="sans-serif"
             android:text="@string/tV_teamcV_name_subt"
             android:textSize="14sp"
-            android:textStyle="italic" />
+            android:textStyle="italic"
+            app:layout_constraintBottom_toTopOf="@+id/tV_teamcV_stadium"
+            app:layout_constraintStart_toEndOf="@+id/imgV_teamcV_badge"
+            app:layout_constraintStart_toStartOf="@+id/tV_teamcV_name"
+            app:layout_constraintTop_toBottomOf="@+id/tV_teamcV_name" />
 
         <TextView
             android:id="@+id/tV_teamcV_stadium"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tV_teamcV_name_subt"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="15dp"
-            android:layout_toEndOf="@id/imgV_teamcV_badge"
             android:fontFamily="sans-serif-black"
             android:text="@string/tV_teamcV_stadium"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/tV_teamcV_stadium_subt"
+            app:layout_constraintStart_toEndOf="@+id/imgV_teamcV_badge"
+            app:layout_constraintStart_toStartOf="@+id/tV_teamcV_name_subt"
+            app:layout_constraintTop_toBottomOf="@+id/tV_teamcV_name_subt" />
 
         <TextView
             android:id="@+id/tV_teamcV_stadium_subt"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tV_teamcV_stadium"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="15dp"
-            android:layout_toEndOf="@id/imgV_teamcV_badge"
             android:fontFamily="sans-serif"
             android:text="@string/tV_teamcV_stadium_subt"
             android:textSize="14sp"
-            android:textStyle="italic" />
+            android:textStyle="italic"
+            app:layout_constraintBottom_toBottomOf="@+id/imgV_teamcV_badge"
+            app:layout_constraintStart_toEndOf="@+id/imgV_teamcV_badge"
+            app:layout_constraintStart_toStartOf="@+id/tV_teamcV_stadium"
+            app:layout_constraintTop_toBottomOf="@+id/tV_teamcV_stadium" />
 
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>
