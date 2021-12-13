@@ -12,10 +12,11 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class NextTeamEventsDataRepository @Inject constructor(
-    private val eventsInfoService: EventsInfoService
+    private val eventsInfoService: EventsInfoService,
+    private val teamDao: TeamDao
 ) {
-    private lateinit var dB: RoomTeamsDatabase
-    private lateinit var teamDao: TeamDao
+    //private lateinit var dB: RoomTeamsDatabase
+    //private lateinit var teamDao: TeamDao
 
     suspend fun getXNextTeamEventsInfo (
         numNextEvents: Int = 5,
@@ -30,23 +31,21 @@ class NextTeamEventsDataRepository @Inject constructor(
     }
 
     suspend fun getTeamInfo (
-        teamName: String,
-        context: Context
+        teamName: String
     ) : Team {
         return withContext(Dispatchers.IO) {
-            dB = RoomTeamsDatabase.getDatabase(context)
-            teamDao = dB.teamDao()
+            //dB = RoomTeamsDatabase.getDatabase(context)
+            //teamDao = dB.teamDao()
             teamDao.getDataFromXTeam(teamName)
         }
     }
 
     suspend fun getBadgeImageTeam (
-        teamName: String,
-        context: Context
+        teamName: String
     ) : String? {
         return withContext(Dispatchers.IO) {
-            dB = RoomTeamsDatabase.getDatabase(context)
-            teamDao = dB.teamDao()
+            //dB = RoomTeamsDatabase.getDatabase(context)
+            //teamDao = dB.teamDao()
             teamDao.getDataFromXTeam(teamName).teamBadge
         }
     }

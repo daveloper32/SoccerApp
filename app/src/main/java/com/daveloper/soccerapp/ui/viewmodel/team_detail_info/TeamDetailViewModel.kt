@@ -11,20 +11,19 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.daveloper.soccerapp.R
 import com.daveloper.soccerapp.auxiliar.ext_fun.getStringResource
-import com.daveloper.soccerapp.auxiliar.internet_conection.InternetConnection
 import com.daveloper.soccerapp.core.LeagueAPIHelper
 import com.daveloper.soccerapp.data.model.entity.Event
 import com.daveloper.soccerapp.data.model.entity.Team
 import com.daveloper.soccerapp.domain.GetTeamInfoFromLocalDBUseCase
 import com.daveloper.soccerapp.domain.GetXNextTeamEventsInfoUseCase
-import com.daveloper.soccerapp.ui.view.main.MainActivity
+import com.daveloper.soccerapp.ui.view.MainActivity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class TeamDetailViewModel @Inject constructor(
-    private val internetConnection: InternetConnection,
+    private val internetIsConnected: Boolean,
     private val getXNextTeamEventsInfoUseCase: GetXNextTeamEventsInfoUseCase,
     private val getTeamInfoFromLocalDBUseCase: GetTeamInfoFromLocalDBUseCase
 ): ViewModel() {
@@ -131,7 +130,7 @@ class TeamDetailViewModel @Inject constructor(
         context: Context
     ) {
         viewModelScope.launch {
-            teamInfo = getTeamInfoFromLocalDBUseCase.getInfo(teamName, context)
+            teamInfo = getTeamInfoFromLocalDBUseCase.getInfo(teamName)
             // Fill the Infromation Fields of the Team
             _setTextTeamName.postValue(teamInfo.name)
             if (!teamInfo.teamDescription.isNullOrEmpty()) {
@@ -190,18 +189,17 @@ class TeamDetailViewModel @Inject constructor(
             }
             _progressVisibility.postValue(false)
 
-            getDataForRecyclerView (teamName, context)
+            getDataForRecyclerView (teamName)
         }
     }
 
     @SuppressLint("NullSafeMutableLiveData")
     private fun getDataForRecyclerView(
-        teamName: String,
-        context: Context
+        teamName: String
     ) {
         _progressEventsVisibility.value = true
         viewModelScope.launch {
-            val internetConnectionState = internetConnection.isConnected(context)
+            //val internetConnectionState = internetConnection.isConnected(context)
             val eventsInfo = teamInfo.league?.let {
                 getAPILeagueID(
                     it
@@ -209,9 +207,8 @@ class TeamDetailViewModel @Inject constructor(
             }?.let {
                 getXNextTeamEventsInfoUseCase
                     .getInfo(teamName = teamName,
-                        context = context,
                         idLeague = it,
-                        internetConnection = internetConnectionState
+                        internetConnection = internetIsConnected
                     )
             }
             if (!eventsInfo.isNullOrEmpty()) {
@@ -240,9 +237,8 @@ class TeamDetailViewModel @Inject constructor(
     }
 
     fun onReloadEventsClicked(
-        context: Context
     ) {
-        getDataForRecyclerView(teamName, context)
+        getDataForRecyclerView(teamName)
         _iBReloadEventsVisibility.value = false
     }
 

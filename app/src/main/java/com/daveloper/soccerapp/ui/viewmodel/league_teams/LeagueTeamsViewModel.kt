@@ -1,12 +1,10 @@
-package com.daveloper.soccerapp.ui.viewmodel.main
+package com.daveloper.soccerapp.ui.viewmodel.league_teams
 
 import android.annotation.SuppressLint
+import android.app.Application
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.daveloper.soccerapp.R
 import com.daveloper.soccerapp.auxiliar.internet_conection.InternetConnection
 import com.daveloper.soccerapp.core.LeagueAPIHelper
@@ -17,28 +15,28 @@ import com.daveloper.soccerapp.domain.GetTeamsInfoByLeagueUseCase
 import com.daveloper.soccerapp.domain.SaveSelectedLeagueUseCase
 import com.daveloper.soccerapp.ui.view.team_detail_info.TeamDetailActivity
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(
-    private val internetConnection: InternetConnection,
+class LeagueTeamsViewModel @Inject constructor(
+    private val internetIsConnected: Boolean,
     private val getTeamsInfoByLeagueUseCase: GetTeamsInfoByLeagueUseCase,
     private val saveSelectedLeagueUseCase: SaveSelectedLeagueUseCase,
     private val getSavedSelectedLeagueUseCase: GetSavedSelectedLeagueUseCase
-): ViewModel() {
-
+): ViewModel(){
     private var leagues = LeagueAPIHelper.getAllLeaguesN()
 
     private val _progressVisibility = MutableLiveData<Boolean>()
     val progressVisibility : LiveData<Boolean> get() = _progressVisibility
-    
+
     private val _showInfoMessage = MutableLiveData<Int>()
     val showInfoMessage : LiveData<Int> get() = _showInfoMessage
-    
+
     private val _goToXActivity = MutableLiveData<Class<out AppCompatActivity?>>()
     val goToXActivity : LiveData<Class<out AppCompatActivity?>> get() = _goToXActivity
-    
+
     private val _setSpinnerPosition = MutableLiveData<Int>()
     val setSpinnerPosition : LiveData<Int> get() = _setSpinnerPosition
 
@@ -57,36 +55,31 @@ class MainViewModel @Inject constructor(
     private val _goToXActivityWithData = MutableLiveData<IntentAndTeamData>()
     val goToXActivityWithData : LiveData<IntentAndTeamData> get() = _goToXActivityWithData
 
-    fun onCreate(
-        context: Context
-    ) {
+    fun onCreate() {
         _progressVisibility.value = true
         _spinnerData.value = leagues
         viewModelScope.launch {
-            val league = getSavedSelectedLeagueUseCase.getData(context)
+            val league = getSavedSelectedLeagueUseCase.getData()
             _setSpinnerPosition.postValue(getSpinnerIndex (league))
-            getDataToFillRecyclerView (context, league)
+            getDataToFillRecyclerView (league)
         }
     }
 
-    fun onRefreshRv(
-        context: Context
-    ) {
+    fun onRefreshRv() {
         _progressVisibility.value = true
         viewModelScope.launch {
-            val league = getSavedSelectedLeagueUseCase.getData(context)
-            getDataToFillRecyclerView (context, league)
+            val league = getSavedSelectedLeagueUseCase.getData()
+            getDataToFillRecyclerView (league)
         }
     }
 
     @SuppressLint("NullSafeMutableLiveData")
     private suspend fun getDataToFillRecyclerView(
-        context: Context,
         league: String
     ) {
-        val internetConnectionState = internetConnection.isConnected(context)
+        //val internetConnectionState = internetIsConnected
         val teamsInfo = getTeamsInfoByLeagueUseCase
-            .getInfo(getAPILeagueName(league), context, internetConnectionState)
+            .getInfo(getAPILeagueName(league), internetIsConnected)
         if (!teamsInfo.isNullOrEmpty()) {
             _recyclerViewData.postValue(teamsInfo)
             _progressVisibility.postValue(false)
@@ -97,10 +90,8 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun onReloadTeamsClicked(
-        context: Context
-    ) {
-        onRefreshRv(context)
+    fun onReloadTeamsClicked() {
+        onRefreshRv()
         _iBReloadTeamsVisibility.value = false
     }
 
@@ -130,10 +121,10 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun onSpinnerItemChanged(context: Context, newLeague: String) {
+    fun onSpinnerItemChanged(newLeague: String) {
         viewModelScope.launch {
-            saveSelectedLeagueUseCase.saveInfo(context, newLeague)
-            onRefreshRv(context)
+            saveSelectedLeagueUseCase.saveInfo(newLeague)
+            onRefreshRv()
         }
     }
 }

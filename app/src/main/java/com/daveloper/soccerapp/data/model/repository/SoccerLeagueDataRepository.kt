@@ -13,10 +13,11 @@ import javax.inject.Inject
 
 class SoccerLeagueDataRepository @Inject constructor(
     private val teamsInfoAPI: TeamsInfoService,
+    private val teamDao: TeamDao,
     private val userLocalData: UserLocalData
 ){
-    private lateinit var dB: RoomTeamsDatabase
-    private lateinit var teamDao: TeamDao
+    //private lateinit var dB: RoomTeamsDatabase
+    //private lateinit var teamDao: TeamDao
 
     suspend fun getAllSearchTeamsInfoByLeague(
         soccerLeague: String
@@ -25,26 +26,24 @@ class SoccerLeagueDataRepository @Inject constructor(
     }
 
     suspend fun getAllTeamsInfoFromALeagueInLocalDB(
-        league: String,
-        context: Context
+        league: String
     ): List<Team> {
         return  withContext(Dispatchers.IO) {
-            dB = RoomTeamsDatabase.getDatabase(context)
-            teamDao = dB.teamDao()
+            //dB = RoomTeamsDatabase.getDatabase(context)
+            //teamDao = dB.teamDao()
             teamDao.getTeamsDataFromXLeague(league)
         }
     }
 
     suspend fun saveInfoAPIinLocalDB (
-        teamsToAdd: List<Team>,
-        context: Context
+        teamsToAdd: List<Team>
     ) {
         withContext(Dispatchers.IO) {
-            dB = RoomTeamsDatabase.getDatabase(context)
-            teamDao = dB.teamDao()
+            //dB = RoomTeamsDatabase.getDatabase(context)
+            //teamDao = dB.teamDao()
             if (!teamsToAdd.isNullOrEmpty()) {
                 for (team in teamsToAdd) {
-                    if (team.name?.let { teamDao.getDataFromXTeam(it) } != null) {
+                    if (team.name.let { teamDao.getDataFromXTeam(it) } != null) {
                         // If its not null the Team exist -> Needs an Update
                         teamDao.updateATeam(team)
                     } else {
@@ -57,19 +56,17 @@ class SoccerLeagueDataRepository @Inject constructor(
     }
 
     suspend fun saveSelectedLeague (
-        context: Context,
         league: String
     ) {
         withContext(Dispatchers.IO){
-            userLocalData.setUserLocalData(context, league)
+            userLocalData.setUserLocalData(league)
         }
     }
 
     suspend fun getSavedSelectedLeague (
-        context: Context
     ) : String {
         return withContext(Dispatchers.IO){
-            userLocalData.getUserLocalData(context)
+            userLocalData.getUserLocalData()
         }
     }
 }

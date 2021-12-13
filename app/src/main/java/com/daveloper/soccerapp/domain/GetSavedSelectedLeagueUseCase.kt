@@ -8,8 +8,7 @@ class GetSavedSelectedLeagueUseCase @Inject constructor(
     private val repository: SoccerLeagueDataRepository
 ) {
     suspend fun getData (
-        context: Context
     ) : String {
-        return repository.getSavedSelectedLeague(context)
+        return repository.getSavedSelectedLeague()
     }
 }

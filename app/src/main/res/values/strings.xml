@@ -4,7 +4,7 @@
     <string name="tB_imgV_main_logo_cD">Soccer App Logo</string>
     <string name="tB_sP_main_msg">Choose a League</string>
 
-    <string name="imgB_main_reload_teams_cD">Reload Teams</string>
+    <string name="imgB_league_teams_reload_teams_cD">Reload Teams</string>
 
     <string name="imgV_teamcV_badge_cD">Team Badge</string>
     <string name="tV_teamcV_name">Team Name</string>
@@ -53,4 +53,6 @@
     <string name="msg_team_det_noHour_exp">To be defined</string>
 
     <string name="iM_team_det_initError">¡Something went wrong! Try again.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

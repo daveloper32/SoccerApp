@@ -1,12 +1,9 @@
-package com.daveloper.soccerapp.ui.view.main
+package com.daveloper.soccerapp.ui.view.league_teams
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.daveloper.soccerapp.R
 import com.daveloper.soccerapp.auxiliar.ext_fun.loadImage
 import com.daveloper.soccerapp.data.model.entity.Team
 import com.daveloper.soccerapp.databinding.TeamCardViewBinding

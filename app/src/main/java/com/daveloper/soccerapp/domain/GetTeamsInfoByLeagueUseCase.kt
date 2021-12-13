@@ -11,16 +11,15 @@ class GetTeamsInfoByLeagueUseCase @Inject constructor(
 ) {
     suspend fun getInfo(
         soccerLeague: String,
-        context: Context,
         internetConnection: Boolean
     ) : List<Team>? {
         if (internetConnection) {
             var data = repository.getAllSearchTeamsInfoByLeague(soccerLeague)
             if (!data.isNullOrEmpty()) {
-                repository.saveInfoAPIinLocalDB(data, context)
+                repository.saveInfoAPIinLocalDB(data)
                 return data
             } else {
-                data = repository.getAllTeamsInfoFromALeagueInLocalDB(soccerLeague, context)
+                data = repository.getAllTeamsInfoFromALeagueInLocalDB(soccerLeague)
                 if (!data.isNullOrEmpty()) {
                     return data
                 } else {
@@ -29,8 +28,7 @@ class GetTeamsInfoByLeagueUseCase @Inject constructor(
             }
         } else {
             val data = repository.getAllTeamsInfoFromALeagueInLocalDB(
-                getNotUnderScoreLeagueName(soccerLeague),
-                context
+                getNotUnderScoreLeagueName(soccerLeague)
             )
             if (!data.isNullOrEmpty()) {
                 return data

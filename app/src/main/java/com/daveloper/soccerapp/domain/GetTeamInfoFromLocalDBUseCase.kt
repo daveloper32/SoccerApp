@@ -9,9 +9,8 @@ class GetTeamInfoFromLocalDBUseCase @Inject constructor(
     private val repository: NextTeamEventsDataRepository
 ) {
     suspend fun getInfo (
-        teamName: String,
-        context: Context
+        teamName: String
     ) : Team {
-        return repository.getTeamInfo(teamName, context)
+        return repository.getTeamInfo(teamName)
     }
 }

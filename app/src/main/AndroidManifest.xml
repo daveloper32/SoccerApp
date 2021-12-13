@@ -25,7 +25,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.view.main.MainActivity"
+            android:name=".ui.view.MainActivity"
             android:exported="true" />
         <activity
             android:name=".ui.view.team_detail_info.TeamDetailActivity"

@@ -9,7 +9,8 @@ import com.daveloper.soccerapp.data.model.entity.Team
 
 @Database (
     entities = [Team::class],
-    version = 1,
+    version = 2,
+    exportSchema = false
 )
 
 abstract class RoomTeamsDatabase

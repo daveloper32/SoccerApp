@@ -9,6 +9,7 @@
         <entry key="..\:/Users/daves/AndroidStudioProjects/SoccerApp/app/src/main/res/layout/activity_main.xml" value="0.18" />
         <entry key="..\:/Users/daves/AndroidStudioProjects/SoccerApp/app/src/main/res/layout/activity_team_detail.xml" value="0.25" />
         <entry key="..\:/Users/daves/AndroidStudioProjects/SoccerApp/app/src/main/res/layout/event_card_view.xml" value="0.33" />
+        <entry key="..\:/Users/daves/AndroidStudioProjects/SoccerApp/app/src/main/res/layout/fragment_league_teams.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/daves/AndroidStudioProjects/SoccerApp/app/src/main/res/layout/main_toolbar.xml" value="0.5" />
         <entry key="..\:/Users/daves/AndroidStudioProjects/SoccerApp/app/src/main/res/layout/my_selected_item.xml" value="0.2717391304347826" />
         <entry key="..\:/Users/daves/AndroidStudioProjects/SoccerApp/app/src/main/res/layout/team_card_view.xml" value="0.5" />
@@ -16,9 +17,6 @@
         <entry key="..\:/Users/daves/AndroidStudioProjects/SoccerApp/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.12552083333333333" />
       </map>
     </option>
-  </component>
-  <component name="ProjectPlainTextFileTypeManager">
-    <file url="file://$PROJECT_DIR$/app/src/main/java/com/daveloper/soccerapp/domain/SaveOrUpdateTeamsOnLocalDBUseCase.kt" />
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />

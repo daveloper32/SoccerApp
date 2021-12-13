@@ -13,7 +13,6 @@ class GetXNextTeamEventsInfoUseCase @Inject constructor(
         numNextEvents: Int = 5,
         idLeague: Int = LeagueAPIHelper.getSpanishLeagueID(),
         teamName: String,
-        context: Context,
         internetConnection: Boolean
     ) : List<Event>? {
         if (internetConnection) {
@@ -23,8 +22,8 @@ class GetXNextTeamEventsInfoUseCase @Inject constructor(
                 teamName
             )
             for (event in data) {
-                event.homeTeamBadge = event.homeTeam?.let { repository.getBadgeImageTeam(it, context) }
-                event.awayTeamBadge = event.awayTeam?.let { repository.getBadgeImageTeam(it, context) }
+                event.homeTeamBadge = event.homeTeam?.let { repository.getBadgeImageTeam(it) }
+                event.awayTeamBadge = event.awayTeam?.let { repository.getBadgeImageTeam(it) }
             }
             return data
         } else {

@@ -248,7 +248,7 @@ class TeamDetailActivity :
             // Toolbar
             binding.tBTeamDetail.tBImgVTeamDetBackicon.id -> viewModel.onBackClicked()
             // Activity
-            binding.imgBTeamDetReloadEvents.id -> viewModel.onReloadEventsClicked(this)
+            binding.imgBTeamDetReloadEvents.id -> viewModel.onReloadEventsClicked()
             binding.tVTeamDetWebPage.id -> viewModel.onWebpageTeamClicked()
             binding.imgBTeamWebPage.id -> viewModel.onWebpageTeamClicked()
             binding.imgBTeamDetFacebook.id -> viewModel.onFacebookWebpageTeamClicked()

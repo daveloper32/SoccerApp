@@ -6,7 +6,7 @@ import com.daveloper.soccerapp.core.LeagueAPIHelper
 import javax.inject.Inject
 
 class UserLocalData @Inject constructor(
-
+    private val context: Context
 ) {
     companion object {
         private lateinit var localData: SharedPreferences
@@ -18,7 +18,6 @@ class UserLocalData @Inject constructor(
     }
 
     fun setUserLocalData (
-        context: Context,
         selectedLeague: String
     ) {
         if (selectedLeague.isNotEmpty()) {
@@ -36,7 +35,6 @@ class UserLocalData @Inject constructor(
     }
 
     fun getUserLocalData (
-        context: Context
     ) : String {
         localData = context.getSharedPreferences(
             userLocalData,
