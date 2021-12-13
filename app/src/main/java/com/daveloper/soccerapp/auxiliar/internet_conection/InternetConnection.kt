@@ -4,22 +4,23 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
+import androidx.core.content.ContextCompat.getSystemService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ServiceComponent
+import dagger.hilt.android.qualifiers.ActivityContext
 import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import javax.inject.Inject
 
-@InstallIn(SingletonComponent::class)
-@Module
-object InternetConnection {
 
-    @Singleton
-    @Provides
+class InternetConnection @Inject constructor(
+    private val giveMeAppContext: Context
+){
+
     fun internetIsConnected (
-        @ApplicationContext context: Context
     ) : Boolean {
+        var context = giveMeAppContext
         val connectivityManager: ConnectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 

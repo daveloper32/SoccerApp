@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.daveloper.soccerapp.R
 import com.daveloper.soccerapp.auxiliar.ext_fun.getStringResource
+import com.daveloper.soccerapp.auxiliar.internet_conection.InternetConnection
 import com.daveloper.soccerapp.core.LeagueAPIHelper
 import com.daveloper.soccerapp.data.model.entity.Event
 import com.daveloper.soccerapp.data.model.entity.Team
@@ -23,7 +24,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TeamDetailViewModel @Inject constructor(
-    private val internetIsConnected: Boolean,
+    private val internetConnection: InternetConnection,
     private val getXNextTeamEventsInfoUseCase: GetXNextTeamEventsInfoUseCase,
     private val getTeamInfoFromLocalDBUseCase: GetTeamInfoFromLocalDBUseCase
 ): ViewModel() {
@@ -199,7 +200,7 @@ class TeamDetailViewModel @Inject constructor(
     ) {
         _progressEventsVisibility.value = true
         viewModelScope.launch {
-            //val internetConnectionState = internetConnection.isConnected(context)
+            val internetConnectionState = internetConnection.internetIsConnected()
             val eventsInfo = teamInfo.league?.let {
                 getAPILeagueID(
                     it
@@ -208,7 +209,7 @@ class TeamDetailViewModel @Inject constructor(
                 getXNextTeamEventsInfoUseCase
                     .getInfo(teamName = teamName,
                         idLeague = it,
-                        internetConnection = internetIsConnected
+                        internetConnection = internetConnectionState
                     )
             }
             if (!eventsInfo.isNullOrEmpty()) {

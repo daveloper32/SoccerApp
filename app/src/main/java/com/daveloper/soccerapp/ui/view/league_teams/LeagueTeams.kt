@@ -1,23 +1,18 @@
 package com.daveloper.soccerapp.ui.view.league_teams
 
-import android.app.Application
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.daveloper.soccerapp.R
 import com.daveloper.soccerapp.auxiliar.ext_fun.getStringResource
-import com.daveloper.soccerapp.auxiliar.ext_fun.goToXActivity
-import com.daveloper.soccerapp.auxiliar.ext_fun.goToXActivityWithData
 import com.daveloper.soccerapp.auxiliar.ext_fun.toast
 import com.daveloper.soccerapp.data.model.entity.Team
 import com.daveloper.soccerapp.databinding.FragmentLeagueTeamsBinding
@@ -36,8 +31,6 @@ class LeagueTeams : Fragment(),
     private lateinit var binding: FragmentLeagueTeamsBinding
     // ViewModel
     private val viewModel: LeagueTeamsViewModel by viewModels<LeagueTeamsViewModel>()
-    // Application instance
-    private lateinit var application: Application
     // Adapter RecyclerView
     private lateinit var teamsAdapter: TeamsAdapter
 
@@ -61,6 +54,7 @@ class LeagueTeams : Fragment(),
         //Listeners
         binding.tBLeagueTeams.spinner.onItemSelectedListener = this
         binding.rVRefreshLeagueTeams.setOnRefreshListener(this)
+        binding.imgBLeagueTeamsReloadTeams.setOnClickListener(this)
     }
 
     private fun initLiveData() {
@@ -77,8 +71,8 @@ class LeagueTeams : Fragment(),
         viewModel.showInfoMessage.observe(
             viewLifecycleOwner,
             Observer {
-                application.toast(
-                    application.getStringResource(it)
+                this.requireActivity().toast(
+                    this.requireActivity().getStringResource(it)
                 )
             }
         )

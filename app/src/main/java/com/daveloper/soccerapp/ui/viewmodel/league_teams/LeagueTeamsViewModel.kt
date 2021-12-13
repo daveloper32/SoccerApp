@@ -21,7 +21,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LeagueTeamsViewModel @Inject constructor(
-    private val internetIsConnected: Boolean,
+    private val internetConnection: InternetConnection,
     private val getTeamsInfoByLeagueUseCase: GetTeamsInfoByLeagueUseCase,
     private val saveSelectedLeagueUseCase: SaveSelectedLeagueUseCase,
     private val getSavedSelectedLeagueUseCase: GetSavedSelectedLeagueUseCase
@@ -77,9 +77,9 @@ class LeagueTeamsViewModel @Inject constructor(
     private suspend fun getDataToFillRecyclerView(
         league: String
     ) {
-        //val internetConnectionState = internetIsConnected
+        val internetConnectionState = internetConnection.internetIsConnected()
         val teamsInfo = getTeamsInfoByLeagueUseCase
-            .getInfo(getAPILeagueName(league), internetIsConnected)
+            .getInfo(getAPILeagueName(league), internetConnectionState)
         if (!teamsInfo.isNullOrEmpty()) {
             _recyclerViewData.postValue(teamsInfo)
             _progressVisibility.postValue(false)
