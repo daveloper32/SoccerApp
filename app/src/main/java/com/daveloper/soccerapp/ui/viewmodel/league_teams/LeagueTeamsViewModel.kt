@@ -84,6 +84,7 @@ class LeagueTeamsViewModel @Inject constructor(
             _recyclerViewData.postValue(teamsInfo)
             _progressVisibility.postValue(false)
         } else {
+            _recyclerViewData.postValue(emptyList())
             _showInfoMessage.postValue(R.string.iM_main_failGetTeams)
             _progressVisibility.postValue(false)
             _iBReloadTeamsVisibility.value = true
@@ -124,6 +125,7 @@ class LeagueTeamsViewModel @Inject constructor(
     fun onSpinnerItemChanged(newLeague: String) {
         viewModelScope.launch {
             saveSelectedLeagueUseCase.saveInfo(newLeague)
+            _iBReloadTeamsVisibility.value = false
             onRefreshRv()
         }
     }
