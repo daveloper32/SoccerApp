@@ -1,4 +1,4 @@
-package com.daveloper.soccerapp.ui.view.league_teams
+package com.daveloper.soccerapp.ui.view.main.league_teams
 
 import android.view.LayoutInflater
 import android.view.View

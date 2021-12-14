@@ -1,29 +1,27 @@
-package com.daveloper.soccerapp.ui.viewmodel.team_detail_info
+package com.daveloper.soccerapp.ui.viewmodel.main.team_detail_info
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.daveloper.soccerapp.R
-import com.daveloper.soccerapp.auxiliar.ext_fun.getStringResource
 import com.daveloper.soccerapp.auxiliar.internet_conection.InternetConnection
 import com.daveloper.soccerapp.core.LeagueAPIHelper
+import com.daveloper.soccerapp.core.ResourceProviderHelper
 import com.daveloper.soccerapp.data.model.entity.Event
 import com.daveloper.soccerapp.data.model.entity.Team
 import com.daveloper.soccerapp.domain.GetTeamInfoFromLocalDBUseCase
 import com.daveloper.soccerapp.domain.GetXNextTeamEventsInfoUseCase
-import com.daveloper.soccerapp.ui.view.MainActivity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class TeamDetailViewModel @Inject constructor(
+    private val resourceProviderHelper: ResourceProviderHelper,
     private val internetConnection: InternetConnection,
     private val getXNextTeamEventsInfoUseCase: GetXNextTeamEventsInfoUseCase,
     private val getTeamInfoFromLocalDBUseCase: GetTeamInfoFromLocalDBUseCase
@@ -45,8 +43,8 @@ class TeamDetailViewModel @Inject constructor(
     private val _showStrInfoMessage = MutableLiveData<String>()
     val showStrInfoMessage : LiveData<String> get() = _showStrInfoMessage
 
-    private val _goToXActivity = MutableLiveData<Class<out AppCompatActivity?>>()
-    val goToXActivity : LiveData<Class<out AppCompatActivity?>> get() = _goToXActivity
+    private val _goToXActivity = MutableLiveData<Boolean>()
+    val goToXActivity : LiveData<Boolean> get() = _goToXActivity
 
     private val _recyclerViewData = MutableLiveData<List<Event>>()
     val recyclerViewData : LiveData<List<Event>> get() = _recyclerViewData
@@ -106,29 +104,26 @@ class TeamDetailViewModel @Inject constructor(
     val iBYoutubeVisibility : LiveData<Boolean> get() = _iBYoutubeVisibility
 
     fun onCreate(
-        intent: Intent?,
-        context: Context
+        teamName: String?
     ) {
         _progressVisibility.value = true
-        teamName = getTeamName(intent)!!
         if (teamName != null) {
             if (!teamName.isEmpty()) {
-                fillInTeamInfo(teamName, context)
+                fillInTeamInfo(teamName)
             } else {
-                _goToXActivity.value = MainActivity::class.java
+                _goToXActivity.value = true
                 _showInfoMessage.value = R.string.iM_team_det_initError
                 _progressVisibility.value = false
             }
         } else {
-            _goToXActivity.value = MainActivity::class.java
+            _goToXActivity.value = true
             _showInfoMessage.value = R.string.iM_team_det_initError
             _progressVisibility.value = false
         }
     }
 
     private fun fillInTeamInfo(
-        teamName: String,
-        context: Context
+        teamName: String
     ) {
         viewModelScope.launch {
             teamInfo = getTeamInfoFromLocalDBUseCase.getInfo(teamName)
@@ -137,12 +132,16 @@ class TeamDetailViewModel @Inject constructor(
             if (!teamInfo.teamDescription.isNullOrEmpty()) {
                 _setTextTeamDescription.postValue(teamInfo.teamDescription!!)
             } else {
-                _setTextTeamDescription.postValue(context.getStringResource(R.string.msg_team_det_noInfo))
+                _setTextTeamDescription.postValue(
+                    resourceProviderHelper.getStringResource(R.string.msg_team_det_noInfo)
+                )
             }
             if (!teamInfo.foundationYear.isNullOrEmpty()) {
                 _setTextFoundationYear.postValue("  ${teamInfo.foundationYear!!}")
             } else {
-                _setTextFoundationYear.postValue(context.getStringResource(R.string.msg_team_det_noInfo))
+                _setTextFoundationYear.postValue(
+                    resourceProviderHelper.getStringResource(R.string.msg_team_det_noInfo)
+                )
             }
             if (!teamInfo.teamBadge.isNullOrEmpty()) {
                 _setImageTeamBadge.postValue(teamInfo.teamBadge!!)
@@ -153,7 +152,9 @@ class TeamDetailViewModel @Inject constructor(
             if (!teamInfo.websiteLink.isNullOrEmpty()) {
                 _setTextWebpage.postValue(teamInfo.websiteLink!!)
             } else {
-                _setTextWebpage.postValue(context.getStringResource(R.string.msg_team_det_noInfo))
+                _setTextWebpage.postValue(
+                    resourceProviderHelper.getStringResource(R.string.msg_team_det_noInfo)
+                )
                 _iBWebpageVisibility.postValue(false)
 
             }
@@ -223,18 +224,8 @@ class TeamDetailViewModel @Inject constructor(
         }
     }
 
-    private fun getTeamName (
-        intent: Intent?
-    ) : String? {
-        return if (intent != null) {
-            intent.getStringExtra("data")
-        } else {
-            ""
-        }
-    }
-
     fun onBackClicked() {
-        _goToXActivity.value = MainActivity::class.java
+        _goToXActivity.value = true
     }
 
     fun onReloadEventsClicked(

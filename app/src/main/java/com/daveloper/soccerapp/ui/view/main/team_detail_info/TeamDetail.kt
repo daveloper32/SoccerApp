@@ -1,47 +1,55 @@
-package com.daveloper.soccerapp.ui.view.team_detail_info
+package com.daveloper.soccerapp.ui.view.main.team_detail_info
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
 import android.view.View
-import androidx.activity.viewModels
+import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.daveloper.soccerapp.R
 import com.daveloper.soccerapp.auxiliar.ext_fun.getStringResource
 import com.daveloper.soccerapp.auxiliar.ext_fun.goToXActivity
 import com.daveloper.soccerapp.auxiliar.ext_fun.loadImage
 import com.daveloper.soccerapp.auxiliar.ext_fun.toast
 import com.daveloper.soccerapp.data.model.entity.Event
-import com.daveloper.soccerapp.databinding.ActivityTeamDetailBinding
-import com.daveloper.soccerapp.ui.viewmodel.team_detail_info.TeamDetailViewModel
+import com.daveloper.soccerapp.databinding.FragmentTeamDetailBinding
+import com.daveloper.soccerapp.ui.viewmodel.main.team_detail_info.TeamDetailViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class TeamDetailActivity :
-    AppCompatActivity(),
+class TeamDetail : Fragment(),
     View.OnClickListener,
     SwipeRefreshLayout.OnRefreshListener
 {
-    // Init Vars
+    // Init vars
     // Binding
-    private lateinit var binding: ActivityTeamDetailBinding
-    // Adapter Recycler VIew
-    private  lateinit var eventsAdapter: EventsAdapter
+    private lateinit var binding: FragmentTeamDetailBinding
+    // Safe Args reference
+    private val teamNameNavArgs by navArgs<TeamDetailArgs>()
     // View Model
-    private val viewModel by viewModels<TeamDetailViewModel>()
+    private val viewModel: TeamDetailViewModel by viewModels<TeamDetailViewModel> ()
+    // Adapter Recycler View
+    private lateinit var eventsAdapter: EventsAdapter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityTeamDetailBinding.inflate(layoutInflater)
-        val view: View = binding.root
-        setContentView(view)
-        startView()
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentTeamDetailBinding.inflate(inflater)
+        initView()
+        // Inflate the layout for this fragment
+        return binding.root
     }
 
-    private fun startView() {
+    private fun initView() {
         initLiveData()
-        binding.rVEvents.layoutManager = LinearLayoutManager(this)
-        viewModel.onCreate(intent, this)
+        binding.rVEvents.layoutManager = LinearLayoutManager(this.requireContext())
+        viewModel.onCreate(teamNameNavArgs.teamNameSelected)
         // Listeners
         binding.tBTeamDetail.tBImgVTeamDetBackicon.setOnClickListener(this)
         binding.imgBTeamDetReloadEvents.setOnClickListener(this)
@@ -78,19 +86,28 @@ class TeamDetailActivity :
         viewModel.showInfoMessage.observe(
             this,
             Observer {
-                toast(getStringResource(it))
+                this
+                    .requireActivity()
+                    .toast(
+                        this.requireActivity().getStringResource(it)
+                    )
             }
         )
         viewModel.showStrInfoMessage.observe(
             this,
             Observer {
-                toast(it)
+                this.requireActivity().toast(it)
             }
         )
         viewModel.goToXActivity.observe(
             this,
             Observer {
-                goToXActivity(it)
+                if (it) {
+                    findNavController()
+                        .navigate(
+                            TeamDetailDirections.actionTeamDetailToLeagueTeams()
+                        )
+                }
             }
         )
         viewModel.recyclerViewData.observe(
@@ -238,7 +255,7 @@ class TeamDetailActivity :
     }
 
     private fun sendEventsInfoToAdapter(eventsInfo: List<Event>) {
-        eventsAdapter = EventsAdapter(eventsInfo, this)
+        eventsAdapter = EventsAdapter(eventsInfo, this.requireContext())
         binding.rVEvents.adapter = eventsAdapter
     }
 
@@ -259,11 +276,8 @@ class TeamDetailActivity :
     }
 
     override fun onRefresh() {
-        viewModel.onCreate(intent, this)
+        viewModel.onCreate(teamNameNavArgs.teamNameSelected)
         binding.rVRefreshEvents.isRefreshing = false
     }
 
-    override fun onBackPressed() {
-        viewModel.onBackClicked()
-    }
 }

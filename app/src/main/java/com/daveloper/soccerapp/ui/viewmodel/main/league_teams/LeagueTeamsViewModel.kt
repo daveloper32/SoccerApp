@@ -1,21 +1,19 @@
-package com.daveloper.soccerapp.ui.viewmodel.league_teams
+package com.daveloper.soccerapp.ui.viewmodel.main.league_teams
 
 import android.annotation.SuppressLint
-import android.app.Application
-import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.daveloper.soccerapp.R
 import com.daveloper.soccerapp.auxiliar.internet_conection.InternetConnection
 import com.daveloper.soccerapp.core.LeagueAPIHelper
-import com.daveloper.soccerapp.data.model.entity.IntentAndTeamData
 import com.daveloper.soccerapp.data.model.entity.Team
 import com.daveloper.soccerapp.domain.GetSavedSelectedLeagueUseCase
 import com.daveloper.soccerapp.domain.GetTeamsInfoByLeagueUseCase
 import com.daveloper.soccerapp.domain.SaveSelectedLeagueUseCase
-import com.daveloper.soccerapp.ui.view.team_detail_info.TeamDetailActivity
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -52,8 +50,8 @@ class LeagueTeamsViewModel @Inject constructor(
     private val _refreshRecyclerViewData = MutableLiveData<List<Team>>()
     val refreshRecyclerViewData : LiveData<List<Team>> get() = _refreshRecyclerViewData
 
-    private val _goToXActivityWithData = MutableLiveData<IntentAndTeamData>()
-    val goToXActivityWithData : LiveData<IntentAndTeamData> get() = _goToXActivityWithData
+    private val _goToXActivityWithData = MutableLiveData<String>()
+    val goToXActivityWithData : LiveData<String> get() = _goToXActivityWithData
 
     fun onCreate() {
         _progressVisibility.value = true
@@ -97,11 +95,7 @@ class LeagueTeamsViewModel @Inject constructor(
     }
 
     fun onTeamClicked(teamSelected: String) {
-        _goToXActivityWithData.value =
-            IntentAndTeamData(
-                TeamDetailActivity::class.java,
-                teamSelected
-            )
+        _goToXActivityWithData.value = teamSelected
     }
 
     private fun getAPILeagueName(league: String): String {

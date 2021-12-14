@@ -1,4 +1,4 @@
-package com.daveloper.soccerapp.ui.view
+package com.daveloper.soccerapp.ui.view.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

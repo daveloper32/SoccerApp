@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.view.main.team_detail_info.TeamDetailActivity">
+    tools:context=".ui.view.main.team_detail_info.TeamDetail">
 
     <include
         android:id="@+id/tB_team_detail"

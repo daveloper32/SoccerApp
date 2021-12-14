@@ -7,7 +7,29 @@
 
     <fragment
         android:id="@+id/leagueTeams"
-        android:name="com.daveloper.soccerapp.ui.view.league_teams.LeagueTeams"
+        android:name="com.daveloper.soccerapp.ui.view.main.league_teams.LeagueTeams"
         android:label="fragment_league_teams"
-        tools:layout="@layout/fragment_league_teams" />
+        tools:layout="@layout/fragment_league_teams" >
+        <action
+            android:id="@+id/action_leagueTeams_to_teamDetail"
+            app:destination="@id/teamDetail"
+            app:launchSingleTop="false"
+            app:popUpToInclusive="false" />
+    </fragment>
+    <fragment
+        android:id="@+id/teamDetail"
+        android:name="com.daveloper.soccerapp.ui.view.main.team_detail_info.TeamDetail"
+        android:label="fragment_team_detail"
+        tools:layout="@layout/fragment_team_detail" >
+        <action
+            android:id="@+id/action_teamDetail_to_leagueTeams"
+            app:destination="@id/leagueTeams"
+            app:launchSingleTop="false"
+            app:popUpTo="@id/leagueTeams"
+            app:popUpToInclusive="true" />
+        <argument
+            android:name="teamNameSelected"
+            app:argType="string"
+            android:defaultValue='""' />
+    </fragment>
 </navigation>

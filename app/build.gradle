@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id "androidx.navigation.safeargs.kotlin"
 }
 
 android {
@@ -47,8 +48,8 @@ dependencies {
     // Activity
     implementation "androidx.activity:activity-ktx:1.4.0"
     // Fragment
-
     implementation "androidx.fragment:fragment-ktx:1.4.0"
+
     // ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0"
     // LiveData
@@ -60,9 +61,12 @@ dependencies {
     // Dagger Hilt Dependecy Injection
     implementation 'com.google.dagger:hilt-android:2.40.5'
     kapt 'com.google.dagger:hilt-compiler:2.40.5'
+
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+
+
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
 
     // Retrofit

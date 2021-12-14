@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.view.league_teams.LeagueTeams">
+    tools:context=".ui.view.main.league_teams.LeagueTeams">
 
     <include
         android:id="@+id/tB_league_teams"

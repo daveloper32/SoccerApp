@@ -1,4 +1,4 @@
-package com.daveloper.soccerapp.ui.view.league_teams
+package com.daveloper.soccerapp.ui.view.main.league_teams
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,14 +9,16 @@ import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.daveloper.soccerapp.R
 import com.daveloper.soccerapp.auxiliar.ext_fun.getStringResource
+import com.daveloper.soccerapp.auxiliar.ext_fun.goToXActivity
 import com.daveloper.soccerapp.auxiliar.ext_fun.toast
 import com.daveloper.soccerapp.data.model.entity.Team
 import com.daveloper.soccerapp.databinding.FragmentLeagueTeamsBinding
-import com.daveloper.soccerapp.ui.viewmodel.league_teams.LeagueTeamsViewModel
+import com.daveloper.soccerapp.ui.viewmodel.main.league_teams.LeagueTeamsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -79,7 +81,7 @@ class LeagueTeams : Fragment(),
         viewModel.goToXActivity.observe(
             viewLifecycleOwner,
             Observer {
-                //goToXActivity(it)
+                this.requireActivity().goToXActivity(it)
             }
         )
         viewModel.setSpinnerPosition.observe(
@@ -125,7 +127,11 @@ class LeagueTeams : Fragment(),
         viewModel.goToXActivityWithData.observe(
             viewLifecycleOwner,
             Observer {
-                //goToXActivityWithData(it.activity, it.teamSelected)
+                findNavController()
+                    .navigate(
+                        LeagueTeamsDirections
+                            .actionLeagueTeamsToTeamDetail(it)
+                    )
             }
         )
     }
