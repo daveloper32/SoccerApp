@@ -127,11 +127,13 @@ class LeagueTeams : Fragment(),
         viewModel.goToXActivityWithData.observe(
             viewLifecycleOwner,
             Observer {
-                findNavController()
-                    .navigate(
-                        LeagueTeamsDirections
-                            .actionLeagueTeamsToTeamDetail(it)
-                    )
+                if (it.isNotEmpty()) {
+                    findNavController()
+                        .navigate(
+                            LeagueTeamsDirections
+                                .actionLeagueTeamsToTeamDetail(it)
+                        )
+                }
             }
         )
     }

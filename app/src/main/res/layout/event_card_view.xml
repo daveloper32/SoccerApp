@@ -86,7 +86,7 @@
 
         <TextView
             android:id="@+id/tV_eventcV_home_team"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="16dp"
@@ -117,7 +117,7 @@
 
         <TextView
             android:id="@+id/tV_eventcV_away_team"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginBottom="16dp"

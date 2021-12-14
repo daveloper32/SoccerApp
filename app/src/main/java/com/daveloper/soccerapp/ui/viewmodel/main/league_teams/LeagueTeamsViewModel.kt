@@ -53,7 +53,10 @@ class LeagueTeamsViewModel @Inject constructor(
     private val _goToXActivityWithData = MutableLiveData<String>()
     val goToXActivityWithData : LiveData<String> get() = _goToXActivityWithData
 
+
+
     fun onCreate() {
+        _goToXActivityWithData.value = ""
         _progressVisibility.value = true
         _spinnerData.value = leagues
         viewModelScope.launch {

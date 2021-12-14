@@ -12,6 +12,8 @@
         android:layout_height="48dp"
         android:layout_gravity="center_horizontal|center_vertical"
         android:layout_marginStart="4dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         android:backgroundTint="@color/invisible"
         android:contentDescription="@string/tB_imgV_team_det_backicon_cD"
         android:src="?attr/actionModeCloseDrawable"
