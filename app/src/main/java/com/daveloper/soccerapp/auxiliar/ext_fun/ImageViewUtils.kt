@@ -1,8 +1,8 @@
 package com.daveloper.soccerapp.auxiliar.ext_fun
 
-import com.daveloper.soccerapp.R
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.daveloper.soccerapp.R
 
 fun ImageView.loadImage (
     urlImage: String,

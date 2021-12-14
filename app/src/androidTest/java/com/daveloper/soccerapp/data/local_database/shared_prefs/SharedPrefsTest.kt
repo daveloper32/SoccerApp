@@ -20,23 +20,15 @@ class SharedPrefsTest {
 
     @Before
     fun setup() {
-        userLocalData = UserLocalData()
+        userLocalData = UserLocalData(ApplicationProvider.getApplicationContext())
     }
 
     @Test
-    fun gettingUserLocalDataWithoutAFirstSetOfData () = runBlockingTest {
-        val data = userLocalData.getUserLocalData(ApplicationProvider.getApplicationContext())
-
-        assertThat(data).isEqualTo(LeagueAPIHelper.getSpanishLeagueN())
-    }
-
-    @Test
-    fun setADifferentUserLocalData () = runBlockingTest {
+    fun setAndGetDifferentUserLocalData () = runBlockingTest {
         userLocalData.setUserLocalData(
-            ApplicationProvider.getApplicationContext(),
             LeagueAPIHelper.getItalianLeagueN()
         )
-        val data = userLocalData.getUserLocalData(ApplicationProvider.getApplicationContext())
+        val data = userLocalData.getUserLocalData()
 
         assertThat(data).isEqualTo(LeagueAPIHelper.getItalianLeagueN())
         assertThat(data).doesNotMatch(LeagueAPIHelper.getSpanishLeagueN())

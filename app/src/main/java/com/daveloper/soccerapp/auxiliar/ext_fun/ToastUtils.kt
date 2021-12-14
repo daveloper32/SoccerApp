@@ -7,7 +7,6 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.AlignmentSpan
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 
 fun Activity.toast (
     message: String,

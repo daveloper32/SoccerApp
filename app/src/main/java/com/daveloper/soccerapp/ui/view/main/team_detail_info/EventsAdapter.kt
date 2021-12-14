@@ -22,7 +22,6 @@ class EventsAdapter (
 
     }
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = EventCardViewBinding
             .inflate(
@@ -46,7 +45,6 @@ class EventsAdapter (
         eventsList.get(position).awayTeamBadge?.let {
             holder.binding.imgVEventcVAwayBadge.loadImage(it, false)
         }
-
         holder.binding.tVEventcVHomeTeam.text = eventsList.get(position).homeTeam
         holder.binding.tVEventcVAwayTeam.text = eventsList.get(position).awayTeam
     }

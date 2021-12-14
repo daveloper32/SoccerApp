@@ -9,8 +9,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.daveloper.soccerapp.R
 import com.daveloper.soccerapp.auxiliar.internet_conection.InternetConnection
+import com.daveloper.soccerapp.auxiliar.resource_provider.ResourceProviderHelper
 import com.daveloper.soccerapp.core.LeagueAPIHelper
-import com.daveloper.soccerapp.core.ResourceProviderHelper
 import com.daveloper.soccerapp.data.model.entity.Event
 import com.daveloper.soccerapp.data.model.entity.Team
 import com.daveloper.soccerapp.domain.GetTeamInfoFromLocalDBUseCase

@@ -4,20 +4,11 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
-import androidx.core.content.ContextCompat.getSystemService
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ServiceComponent
-import dagger.hilt.android.qualifiers.ActivityContext
-import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
-
 
 class InternetConnection @Inject constructor(
     private val giveMeAppContext: Context
 ){
-
     fun internetIsConnected (
     ) : Boolean {
         var context = giveMeAppContext

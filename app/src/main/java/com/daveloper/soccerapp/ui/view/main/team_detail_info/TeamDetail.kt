@@ -1,19 +1,17 @@
 package com.daveloper.soccerapp.ui.view.main.team_detail_info
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.daveloper.soccerapp.R
 import com.daveloper.soccerapp.auxiliar.ext_fun.getStringResource
-import com.daveloper.soccerapp.auxiliar.ext_fun.goToXActivity
 import com.daveloper.soccerapp.auxiliar.ext_fun.loadImage
 import com.daveloper.soccerapp.auxiliar.ext_fun.toast
 import com.daveloper.soccerapp.data.model.entity.Event

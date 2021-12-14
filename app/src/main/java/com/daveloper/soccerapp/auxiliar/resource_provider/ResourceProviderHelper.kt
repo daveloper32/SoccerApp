@@ -1,10 +1,8 @@
-package com.daveloper.soccerapp.core
+package com.daveloper.soccerapp.auxiliar.resource_provider
 
 import android.content.Context
 import com.daveloper.soccerapp.auxiliar.ext_fun.getStringResource
-import java.util.concurrent.CopyOnWriteArrayList
 import javax.inject.Inject
-
 
 class ResourceProviderHelper @Inject constructor(
     private val giveMeAppContext: Context

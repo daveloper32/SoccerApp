@@ -1,6 +1,5 @@
 package com.daveloper.soccerapp.domain
 
-import android.content.Context
 import com.daveloper.soccerapp.data.model.entity.Team
 import com.daveloper.soccerapp.data.model.repository.NextTeamEventsDataRepository
 import javax.inject.Inject

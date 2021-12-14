@@ -1,9 +1,6 @@
 package com.daveloper.soccerapp.data.model.repository
 
-import android.content.Context
-import androidx.recyclerview.widget.DividerItemDecoration
 import com.daveloper.soccerapp.data.local_database.room.dao.TeamDao
-import com.daveloper.soccerapp.data.local_database.room.database.RoomTeamsDatabase
 import com.daveloper.soccerapp.data.local_database.shared_prefs.UserLocalData
 import com.daveloper.soccerapp.data.model.entity.Team
 import com.daveloper.soccerapp.data.network.TeamsInfoService

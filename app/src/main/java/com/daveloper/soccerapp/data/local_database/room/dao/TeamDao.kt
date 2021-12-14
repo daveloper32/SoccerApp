@@ -1,6 +1,9 @@
 package com.daveloper.soccerapp.data.local_database.room.dao
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.Query
+import androidx.room.Update
 import com.daveloper.soccerapp.data.model.entity.Team
 
 @Dao
