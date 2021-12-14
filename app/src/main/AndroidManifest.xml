@@ -27,9 +27,6 @@
         <activity
             android:name=".ui.view.main.MainActivity"
             android:exported="true" />
-        <activity
-            android:name=".ui.view.main.team_detail_info.TeamDetailActivity"
-            android:exported="false" />
     </application>
 
 </manifest>
