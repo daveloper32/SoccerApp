@@ -12,3 +12,7 @@ SoccerApp es una aplicación que te permitirá visualizar todos los equipos que 
 ![](images/Main_options.png)
 
 ![](images/Team%20Details%201.png)
+
+![](images/Team%20Details%202.png)
+
+![](images/Team%20Details%203.png)
