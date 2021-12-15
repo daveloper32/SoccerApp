@@ -1,6 +1,8 @@
 package com.daveloper.soccerapp.data.model.repository
 
+import android.content.Context
 import com.daveloper.soccerapp.data.local_database.room.dao.TeamDao
+import com.daveloper.soccerapp.data.local_database.room.database.RoomTeamsDatabase
 import com.daveloper.soccerapp.data.local_database.shared_prefs.UserLocalData
 import com.daveloper.soccerapp.data.model.entity.Team
 import com.daveloper.soccerapp.data.network.TeamsInfoService
@@ -11,6 +13,8 @@ import javax.inject.Inject
 class SoccerLeagueDataRepository @Inject constructor(
     private val teamsInfoAPI: TeamsInfoService,
     private val teamDao: TeamDao,
+    //private val context: Context,
+    //private val dB: RoomTeamsDatabase,
     private val userLocalData: UserLocalData
 ){
     //private lateinit var dB: RoomTeamsDatabase
@@ -40,9 +44,17 @@ class SoccerLeagueDataRepository @Inject constructor(
             //teamDao = dB.teamDao()
             if (!teamsToAdd.isNullOrEmpty()) {
                 for (team in teamsToAdd) {
-                    if (team.name.let { teamDao.getDataFromXTeam(it) } != null) {
-                        // If its not null the Team exist -> Needs an Update
-                        teamDao.updateATeam(team)
+                    if (!teamDao.getAllTeams().isNullOrEmpty()) {
+                        if (team.name?.let { teamDao.getDataFromXTeam(it) } != null) {
+                            val teamFounded = teamDao.getDataFromXTeam(team.name!!)
+                            if (teamFounded!!.name == team.name){
+                                // If its not null the Team exist -> Needs an Update
+                                teamDao.updateATeam(team)
+                            }
+                        } else {
+                            // If its null the Team doesnt exist -> Needs an Insert
+                            teamDao.insert(team)
+                        }
                     } else {
                         // If its null the Team doesnt exist -> Needs an Insert
                         teamDao.insert(team)

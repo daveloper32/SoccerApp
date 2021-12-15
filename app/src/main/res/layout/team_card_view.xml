@@ -72,6 +72,7 @@
             android:text="@string/tV_teamcV_stadium"
             android:textSize="16sp"
             app:layout_constraintBottom_toTopOf="@+id/tV_teamcV_stadium_subt"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imgV_teamcV_badge"
             app:layout_constraintStart_toStartOf="@+id/tV_teamcV_name_subt"
             app:layout_constraintTop_toBottomOf="@+id/tV_teamcV_name_subt" />

@@ -11,8 +11,11 @@ interface TeamDao {
     @Insert()
     fun insert(team: Team)
 
-    @Query("SELECT * FROM teams WHERE name = :teamName")
-    fun getDataFromXTeam(teamName: String): Team
+    @Query("SELECT * FROM teams")
+    fun getAllTeams(): List<Team>
+
+    @Query("SELECT * FROM teams WHERE team_name = :teamName")
+    fun getDataFromXTeam(teamName: String): Team?
 
     @Query("SELECT * FROM teams WHERE league = :leagueName")
     fun getTeamsDataFromXLeague(leagueName: String): List<Team>

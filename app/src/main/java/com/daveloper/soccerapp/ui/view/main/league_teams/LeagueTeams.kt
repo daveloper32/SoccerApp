@@ -115,6 +115,7 @@ class LeagueTeams : Fragment(),
             viewLifecycleOwner,
             Observer {
                 sendTeamsInfoToAdapter(it)
+                binding.rVRefreshLeagueTeams.isRefreshing = false
             }
         )
         viewModel.refreshRecyclerViewData.observe(
