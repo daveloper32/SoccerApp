@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.daveloper.soccerapp.R
+import com.daveloper.soccerapp.auxiliar.ext_fun.isNotNull
 import com.daveloper.soccerapp.auxiliar.internet_conection.InternetConnection
 import com.daveloper.soccerapp.auxiliar.resource_provider.ResourceProviderHelper
 import com.daveloper.soccerapp.core.LeagueAPIHelper
@@ -126,72 +127,80 @@ class TeamDetailViewModel @Inject constructor(
         teamName: String
     ) {
         viewModelScope.launch {
-            teamInfo = getTeamInfoFromLocalDBUseCase.getInfo(teamName)
-            // Fill the Infromation Fields of the Team
-            _setTextTeamName.postValue(teamInfo.name)
-            if (!teamInfo.teamDescription.isNullOrEmpty()) {
-                _setTextTeamDescription.postValue(teamInfo.teamDescription!!)
-            } else {
-                _setTextTeamDescription.postValue(
-                    resourceProviderHelper.getStringResource(R.string.msg_team_det_noInfo)
-                )
+            getTeamInfoFromLocalDBUseCase.getInfo(teamName).also {
+                if (it != null) {
+                    teamInfo = it
+                }
             }
-            if (!teamInfo.foundationYear.isNullOrEmpty()) {
-                _setTextFoundationYear.postValue("  ${teamInfo.foundationYear!!}")
-            } else {
-                _setTextFoundationYear.postValue(
-                    resourceProviderHelper.getStringResource(R.string.msg_team_det_noInfo)
-                )
-            }
-            if (!teamInfo.teamBadge.isNullOrEmpty()) {
-                _setImageTeamBadge.postValue(teamInfo.teamBadge!!)
-            }
-            if (!teamInfo.teamJersey.isNullOrEmpty()) {
-                _setImageTeamJersey.postValue(teamInfo.teamJersey!!)
-            }
-            if (!teamInfo.websiteLink.isNullOrEmpty()) {
-                _setTextWebpage.postValue(teamInfo.websiteLink!!)
-            } else {
-                _setTextWebpage.postValue(
-                    resourceProviderHelper.getStringResource(R.string.msg_team_det_noInfo)
-                )
-                _iBWebpageVisibility.postValue(false)
+            if (teamInfo.isNotNull()) {
+                // Fill the Infromation Fields of the Team
+                _setTextTeamName.postValue(teamInfo.name?: "")
+                if (!teamInfo.teamDescription.isNullOrEmpty()) {
+                    _setTextTeamDescription.postValue(teamInfo.teamDescription!!)
+                } else {
+                    _setTextTeamDescription.postValue(
+                        resourceProviderHelper.getStringResource(R.string.msg_team_det_noInfo)
+                    )
+                }
+                if (!teamInfo.foundationYear.isNullOrEmpty()) {
+                    _setTextFoundationYear.postValue("  ${teamInfo.foundationYear!!}")
+                } else {
+                    _setTextFoundationYear.postValue(
+                        resourceProviderHelper.getStringResource(R.string.msg_team_det_noInfo)
+                    )
+                }
+                if (!teamInfo.teamBadge.isNullOrEmpty()) {
+                    _setImageTeamBadge.postValue(teamInfo.teamBadge!!)
+                }
+                if (!teamInfo.teamJersey.isNullOrEmpty()) {
+                    _setImageTeamJersey.postValue(teamInfo.teamJersey!!)
+                }
+                if (!teamInfo.websiteLink.isNullOrEmpty()) {
+                    _setTextWebpage.postValue(teamInfo.websiteLink!!)
+                } else {
+                    _setTextWebpage.postValue(
+                        resourceProviderHelper.getStringResource(R.string.msg_team_det_noInfo)
+                    )
+                    _iBWebpageVisibility.postValue(false)
 
-            }
-            if (teamInfo.facebookLink.isNullOrEmpty() &&
+                }
+                if (teamInfo.facebookLink.isNullOrEmpty() &&
                     teamInfo.instagramLink.isNullOrEmpty() &&
                     teamInfo.twitterLink.isNullOrEmpty() &&
                     teamInfo.youtubeLink.isNullOrEmpty()) {
-                _tVSocialNetworkVisibility.postValue(false)
-                _iBFacebookVisibility.postValue(false)
-                _iBInstagramVisibility.postValue(false)
-                _iBTwitterVisibility.postValue(false)
-                _iBYoutubeVisibility.postValue(false)
-            }
+                    _tVSocialNetworkVisibility.postValue(false)
+                    _iBFacebookVisibility.postValue(false)
+                    _iBInstagramVisibility.postValue(false)
+                    _iBTwitterVisibility.postValue(false)
+                    _iBYoutubeVisibility.postValue(false)
+                }
 
-            if (!teamInfo.facebookLink.isNullOrEmpty()){
-                _iBFacebookVisibility.postValue(true)
-            } else {
-                _iBFacebookVisibility.postValue(false)
-            }
-            if (!teamInfo.instagramLink.isNullOrEmpty()){
-                _iBInstagramVisibility.postValue(true)
-            } else {
-                _iBInstagramVisibility.postValue(false)
-            }
-            if (!teamInfo.twitterLink.isNullOrEmpty()){
-                _iBTwitterVisibility.postValue(true)
-            } else {
-                _iBTwitterVisibility.postValue(false)
-            }
-            if (!teamInfo.youtubeLink.isNullOrEmpty()){
-                _iBYoutubeVisibility.postValue(true)
-            } else {
-                _iBYoutubeVisibility.postValue(false)
+                if (!teamInfo.facebookLink.isNullOrEmpty()){
+                    _iBFacebookVisibility.postValue(true)
+                } else {
+                    _iBFacebookVisibility.postValue(false)
+                }
+                if (!teamInfo.instagramLink.isNullOrEmpty()){
+                    _iBInstagramVisibility.postValue(true)
+                } else {
+                    _iBInstagramVisibility.postValue(false)
+                }
+                if (!teamInfo.twitterLink.isNullOrEmpty()){
+                    _iBTwitterVisibility.postValue(true)
+                } else {
+                    _iBTwitterVisibility.postValue(false)
+                }
+                if (!teamInfo.youtubeLink.isNullOrEmpty()){
+                    _iBYoutubeVisibility.postValue(true)
+                } else {
+                    _iBYoutubeVisibility.postValue(false)
+                }
+                _progressVisibility.postValue(false)
+
+                getDataForRecyclerView (teamName)
             }
             _progressVisibility.postValue(false)
 
-            getDataForRecyclerView (teamName)
         }
     }
 

@@ -1,15 +1,14 @@
 package com.daveloper.soccerapp.data.network
 
-import com.daveloper.soccerapp.core.RetrofitHelper
 import com.daveloper.soccerapp.data.model.entity.Team
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import retrofit2.Retrofit
 import javax.inject.Inject
 
-class TeamsInfoService @Inject constructor() {
-    private val apiTeamsInfo: String =
-        "https://www.thesportsdb.com/api/v1/json/2/"
-    private val retrofit = RetrofitHelper.getRetrofit(apiTeamsInfo)
+class TeamsInfoService @Inject constructor(
+    private val retrofit: Retrofit
+) {
 
     suspend fun searchTeamsInfoByLeague (
         soccerLeague: String

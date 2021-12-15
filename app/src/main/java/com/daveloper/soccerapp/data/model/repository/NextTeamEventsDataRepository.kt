@@ -1,17 +1,15 @@
 package com.daveloper.soccerapp.data.model.repository
 
 import com.daveloper.soccerapp.core.LeagueAPIHelper
-import com.daveloper.soccerapp.data.local_database.room.dao.TeamDao
 import com.daveloper.soccerapp.data.model.entity.Event
 import com.daveloper.soccerapp.data.model.entity.Team
-import com.daveloper.soccerapp.data.network.EventsInfoService
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import com.daveloper.soccerapp.data.model.use_cases.GetDataFromXTeamFromDBUseCase
+import com.daveloper.soccerapp.data.model.use_cases.GetNextXTeamEventsFromAPIUseCase
 import javax.inject.Inject
 
 class NextTeamEventsDataRepository @Inject constructor(
-    private val eventsInfoService: EventsInfoService,
-    private val teamDao: TeamDao
+    private val getNextXTeamEvents: GetNextXTeamEventsFromAPIUseCase,
+    private val getDataFromXTeamFromDBUseCase: GetDataFromXTeamFromDBUseCase
 ) {
 
     suspend fun getXNextTeamEventsInfo (
@@ -19,7 +17,7 @@ class NextTeamEventsDataRepository @Inject constructor(
         idLeague: Int = LeagueAPIHelper.getSpanishLeagueID(),
         teamName: String
     ): List<Event> {
-        return eventsInfoService.getNextXEventsFromTeam(
+        return getNextXTeamEvents.getData(
             numNextEvents,
             idLeague,
             teamName
@@ -28,17 +26,13 @@ class NextTeamEventsDataRepository @Inject constructor(
 
     suspend fun getTeamInfo (
         teamName: String
-    ) : Team {
-        return withContext(Dispatchers.IO) {
-            teamDao.getDataFromXTeam(teamName)!!
-        }
+    ) : Team? {
+        return getDataFromXTeamFromDBUseCase.getData(teamName)
     }
 
     suspend fun getBadgeImageTeam (
         teamName: String
     ) : String? {
-        return withContext(Dispatchers.IO) {
-            teamDao.getDataFromXTeam(teamName)?.teamBadge
-        }
+        return getDataFromXTeamFromDBUseCase.getData(teamName)?.teamBadge
     }
 }

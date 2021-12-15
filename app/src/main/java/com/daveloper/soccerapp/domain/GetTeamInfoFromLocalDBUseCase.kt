@@ -9,7 +9,7 @@ class GetTeamInfoFromLocalDBUseCase @Inject constructor(
 ) {
     suspend fun getInfo (
         teamName: String
-    ) : Team {
+    ) : Team? {
         return repository.getTeamInfo(teamName)
     }
 }
