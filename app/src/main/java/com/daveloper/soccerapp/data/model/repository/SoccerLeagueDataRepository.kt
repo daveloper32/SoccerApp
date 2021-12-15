@@ -1,8 +1,6 @@
 package com.daveloper.soccerapp.data.model.repository
 
-import android.content.Context
 import com.daveloper.soccerapp.data.local_database.room.dao.TeamDao
-import com.daveloper.soccerapp.data.local_database.room.database.RoomTeamsDatabase
 import com.daveloper.soccerapp.data.local_database.shared_prefs.UserLocalData
 import com.daveloper.soccerapp.data.model.entity.Team
 import com.daveloper.soccerapp.data.network.TeamsInfoService
@@ -13,12 +11,8 @@ import javax.inject.Inject
 class SoccerLeagueDataRepository @Inject constructor(
     private val teamsInfoAPI: TeamsInfoService,
     private val teamDao: TeamDao,
-    //private val context: Context,
-    //private val dB: RoomTeamsDatabase,
     private val userLocalData: UserLocalData
 ){
-    //private lateinit var dB: RoomTeamsDatabase
-    //private lateinit var teamDao: TeamDao
 
     suspend fun getAllSearchTeamsInfoByLeague(
         soccerLeague: String
@@ -30,8 +24,6 @@ class SoccerLeagueDataRepository @Inject constructor(
         league: String
     ): List<Team> {
         return  withContext(Dispatchers.IO) {
-            //dB = RoomTeamsDatabase.getDatabase(context)
-            //teamDao = dB.teamDao()
             teamDao.getTeamsDataFromXLeague(league)
         }
     }
@@ -40,8 +32,6 @@ class SoccerLeagueDataRepository @Inject constructor(
         teamsToAdd: List<Team>
     ) {
         withContext(Dispatchers.IO) {
-            //dB = RoomTeamsDatabase.getDatabase(context)
-            //teamDao = dB.teamDao()
             if (!teamsToAdd.isNullOrEmpty()) {
                 for (team in teamsToAdd) {
                     if (!teamDao.getAllTeams().isNullOrEmpty()) {
