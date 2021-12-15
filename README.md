@@ -5,4 +5,6 @@ SoccerApp es una aplicación que te permitirá visualizar todos los equipos que 
 
 ## Screenshots App
 
-![](imagesSplash.jpg)
+![](images/Splash.png)
+
+![](images/Main.png)
