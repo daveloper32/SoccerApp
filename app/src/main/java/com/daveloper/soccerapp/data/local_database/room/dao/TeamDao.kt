@@ -22,5 +22,4 @@ interface TeamDao {
 
     @Update
     fun updateATeam(team: Team)
-
 }
