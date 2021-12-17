@@ -1,5 +1,6 @@
-package com.daveloper.soccerapp.data.model.use_cases
+package com.daveloper.soccerapp.data.model.use_cases.room_db
 
+import com.daveloper.soccerapp.auxiliar.exception_provider.ExceptionProviderHelper
 import com.daveloper.soccerapp.data.model.entity.Team
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -10,7 +11,8 @@ class SaveAPIDataInDBUseCase @Inject constructor(
     private val getAllTeamsDataFromDBUseCase: GetAllTeamsDataFromDBUseCase,
     private val getDataFromXTeamFromDBUseCase: GetDataFromXTeamFromDBUseCase,
     private val insertTeamInDBUseCase: InsertTeamInDBUseCase,
-    private val updateTeamInDBUseCase: UpdateTeamInDBUseCase
+    private val updateTeamInDBUseCase: UpdateTeamInDBUseCase,
+    private val exceptionProviderHelper: ExceptionProviderHelper
 ) {
 
     suspend fun save (
@@ -43,7 +45,7 @@ class SaveAPIDataInDBUseCase @Inject constructor(
                     throw Exception(e)
                 }
             } else {
-                throw Exception("The parameter 'teams' is invalid (null or empty List<Team>)")
+                throw Exception(exceptionProviderHelper.getLocalDBException(4))
             }
         }
     }

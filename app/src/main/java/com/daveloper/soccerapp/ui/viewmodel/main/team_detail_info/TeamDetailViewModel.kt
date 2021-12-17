@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.daveloper.soccerapp.R
+import com.daveloper.soccerapp.auxiliar.exception_provider.ExceptionProviderHelper
 import com.daveloper.soccerapp.auxiliar.ext_fun.isNotNull
 import com.daveloper.soccerapp.auxiliar.internet_conection.InternetConnection
 import com.daveloper.soccerapp.auxiliar.resource_provider.ResourceProviderHelper
@@ -25,7 +26,8 @@ class TeamDetailViewModel @Inject constructor(
     private val resourceProviderHelper: ResourceProviderHelper,
     private val internetConnection: InternetConnection,
     private val getXNextTeamEventsInfoUseCase: GetXNextTeamEventsInfoUseCase,
-    private val getTeamInfoFromLocalDBUseCase: GetTeamInfoFromLocalDBUseCase
+    private val getTeamInfoFromLocalDBUseCase: GetTeamInfoFromLocalDBUseCase,
+    private val exceptionProviderHelper: ExceptionProviderHelper
 ): ViewModel() {
 
     private lateinit var teamInfo: Team
@@ -38,11 +40,11 @@ class TeamDetailViewModel @Inject constructor(
     private val _progressEventsVisibility = MutableLiveData<Boolean>()
     val progressEventsVisibility : LiveData<Boolean> get() = _progressEventsVisibility
 
-    private val _showInfoMessage = MutableLiveData<Int>()
-    val showInfoMessage : LiveData<Int> get() = _showInfoMessage
+    private val _showInfoMessage = MutableLiveData<String>()
+    val showInfoMessage : LiveData<String> get() = _showInfoMessage
 
-    private val _showStrInfoMessage = MutableLiveData<String>()
-    val showStrInfoMessage : LiveData<String> get() = _showStrInfoMessage
+    private val _showInfoMessageFromResource = MutableLiveData<Int>()
+    val showInfoMessageFromResource : LiveData<Int> get() = _showInfoMessageFromResource
 
     private val _goToXActivity = MutableLiveData<Boolean>()
     val goToXActivity : LiveData<Boolean> get() = _goToXActivity
@@ -113,12 +115,12 @@ class TeamDetailViewModel @Inject constructor(
                 fillInTeamInfo(teamName)
             } else {
                 _goToXActivity.value = true
-                _showInfoMessage.value = R.string.iM_team_det_initError
+                _showInfoMessageFromResource.value = R.string.iM_team_det_initError
                 _progressVisibility.value = false
             }
         } else {
             _goToXActivity.value = true
-            _showInfoMessage.value = R.string.iM_team_det_initError
+            _showInfoMessageFromResource.value = R.string.iM_team_det_initError
             _progressVisibility.value = false
         }
     }
@@ -127,79 +129,87 @@ class TeamDetailViewModel @Inject constructor(
         teamName: String
     ) {
         viewModelScope.launch {
-            getTeamInfoFromLocalDBUseCase.getInfo(teamName).also {
-                if (it != null) {
-                    teamInfo = it
+            try {
+                getTeamInfoFromLocalDBUseCase.getInfo(teamName).also {
+                    if (it != null) {
+                        teamInfo = it
+                    }
                 }
-            }
-            if (teamInfo.isNotNull()) {
-                // Fill the Infromation Fields of the Team
-                _setTextTeamName.postValue(teamInfo.name?: "")
-                if (!teamInfo.teamDescription.isNullOrEmpty()) {
-                    _setTextTeamDescription.postValue(teamInfo.teamDescription!!)
-                } else {
-                    _setTextTeamDescription.postValue(
-                        resourceProviderHelper.getStringResource(R.string.msg_team_det_noInfo)
-                    )
-                }
-                if (!teamInfo.foundationYear.isNullOrEmpty()) {
-                    _setTextFoundationYear.postValue("  ${teamInfo.foundationYear!!}")
-                } else {
-                    _setTextFoundationYear.postValue(
-                        resourceProviderHelper.getStringResource(R.string.msg_team_det_noInfo)
-                    )
-                }
-                if (!teamInfo.teamBadge.isNullOrEmpty()) {
-                    _setImageTeamBadge.postValue(teamInfo.teamBadge!!)
-                }
-                if (!teamInfo.teamJersey.isNullOrEmpty()) {
-                    _setImageTeamJersey.postValue(teamInfo.teamJersey!!)
-                }
-                if (!teamInfo.websiteLink.isNullOrEmpty()) {
-                    _setTextWebpage.postValue(teamInfo.websiteLink!!)
-                } else {
-                    _setTextWebpage.postValue(
-                        resourceProviderHelper.getStringResource(R.string.msg_team_det_noInfo)
-                    )
-                    _iBWebpageVisibility.postValue(false)
+                if (teamInfo.isNotNull()) {
+                    // Fill the Infromation Fields of the Team
+                    _setTextTeamName.postValue(teamInfo.name?: "")
+                    if (!teamInfo.teamDescription.isNullOrEmpty()) {
+                        _setTextTeamDescription.postValue(teamInfo.teamDescription!!)
+                    } else {
+                        _setTextTeamDescription.postValue(
+                            resourceProviderHelper.getStringResource(R.string.msg_team_det_noInfo)
+                        )
+                    }
+                    if (!teamInfo.foundationYear.isNullOrEmpty()) {
+                        _setTextFoundationYear.postValue("  ${teamInfo.foundationYear!!}")
+                    } else {
+                        _setTextFoundationYear.postValue(
+                            resourceProviderHelper.getStringResource(R.string.msg_team_det_noInfo)
+                        )
+                    }
+                    if (!teamInfo.teamBadge.isNullOrEmpty()) {
+                        _setImageTeamBadge.postValue(teamInfo.teamBadge!!)
+                    }
+                    if (!teamInfo.teamJersey.isNullOrEmpty()) {
+                        _setImageTeamJersey.postValue(teamInfo.teamJersey!!)
+                    }
+                    if (!teamInfo.websiteLink.isNullOrEmpty()) {
+                        _setTextWebpage.postValue(teamInfo.websiteLink!!)
+                    } else {
+                        _setTextWebpage.postValue(
+                            resourceProviderHelper.getStringResource(R.string.msg_team_det_noInfo)
+                        )
+                        _iBWebpageVisibility.postValue(false)
 
-                }
-                if (teamInfo.facebookLink.isNullOrEmpty() &&
-                    teamInfo.instagramLink.isNullOrEmpty() &&
-                    teamInfo.twitterLink.isNullOrEmpty() &&
-                    teamInfo.youtubeLink.isNullOrEmpty()) {
-                    _tVSocialNetworkVisibility.postValue(false)
-                    _iBFacebookVisibility.postValue(false)
-                    _iBInstagramVisibility.postValue(false)
-                    _iBTwitterVisibility.postValue(false)
-                    _iBYoutubeVisibility.postValue(false)
-                }
+                    }
+                    if (teamInfo.facebookLink.isNullOrEmpty() &&
+                        teamInfo.instagramLink.isNullOrEmpty() &&
+                        teamInfo.twitterLink.isNullOrEmpty() &&
+                        teamInfo.youtubeLink.isNullOrEmpty()) {
+                        _tVSocialNetworkVisibility.postValue(false)
+                        _iBFacebookVisibility.postValue(false)
+                        _iBInstagramVisibility.postValue(false)
+                        _iBTwitterVisibility.postValue(false)
+                        _iBYoutubeVisibility.postValue(false)
+                    }
 
-                if (!teamInfo.facebookLink.isNullOrEmpty()){
-                    _iBFacebookVisibility.postValue(true)
-                } else {
-                    _iBFacebookVisibility.postValue(false)
-                }
-                if (!teamInfo.instagramLink.isNullOrEmpty()){
-                    _iBInstagramVisibility.postValue(true)
-                } else {
-                    _iBInstagramVisibility.postValue(false)
-                }
-                if (!teamInfo.twitterLink.isNullOrEmpty()){
-                    _iBTwitterVisibility.postValue(true)
-                } else {
-                    _iBTwitterVisibility.postValue(false)
-                }
-                if (!teamInfo.youtubeLink.isNullOrEmpty()){
-                    _iBYoutubeVisibility.postValue(true)
-                } else {
-                    _iBYoutubeVisibility.postValue(false)
+                    if (!teamInfo.facebookLink.isNullOrEmpty()){
+                        _iBFacebookVisibility.postValue(true)
+                    } else {
+                        _iBFacebookVisibility.postValue(false)
+                    }
+                    if (!teamInfo.instagramLink.isNullOrEmpty()){
+                        _iBInstagramVisibility.postValue(true)
+                    } else {
+                        _iBInstagramVisibility.postValue(false)
+                    }
+                    if (!teamInfo.twitterLink.isNullOrEmpty()){
+                        _iBTwitterVisibility.postValue(true)
+                    } else {
+                        _iBTwitterVisibility.postValue(false)
+                    }
+                    if (!teamInfo.youtubeLink.isNullOrEmpty()){
+                        _iBYoutubeVisibility.postValue(true)
+                    } else {
+                        _iBYoutubeVisibility.postValue(false)
+                    }
+                    _progressVisibility.postValue(false)
+
+                    getDataForRecyclerView (teamName)
                 }
                 _progressVisibility.postValue(false)
-
-                getDataForRecyclerView (teamName)
+            } catch (e: Exception) {
+                _showInfoMessage.postValue(
+                    exceptionProviderHelper
+                        .fromStrExceptionToUserMsg(e.toString())
+                )
+                _progressVisibility.postValue(false)
             }
-            _progressVisibility.postValue(false)
 
         }
     }
@@ -210,26 +220,38 @@ class TeamDetailViewModel @Inject constructor(
     ) {
         _progressEventsVisibility.value = true
         viewModelScope.launch {
-            val internetConnectionState = internetConnection.internetIsConnected()
-            val eventsInfo = teamInfo.league?.let {
-                getAPILeagueID(
-                    it
-                )
-            }?.let {
-                getXNextTeamEventsInfoUseCase
-                    .getInfo(teamName = teamName,
-                        idLeague = it,
-                        internetConnection = internetConnectionState
+            try {
+                val internetConnectionState = internetConnection.internetIsConnected()
+                val eventsInfo = teamInfo.league?.let {
+                    getAPILeagueID(
+                        it
                     )
-            }
-            if (!eventsInfo.isNullOrEmpty()) {
-                _recyclerViewData.postValue(eventsInfo)
-                _progressEventsVisibility.postValue(false)
-            } else {
-                _showInfoMessage.postValue(R.string.iM_team_det_failGetEvents)
+                }?.let {
+                    getXNextTeamEventsInfoUseCase
+                        .getInfo(teamName = teamName,
+                            idLeague = it,
+                            internetConnection = internetConnectionState
+                        )
+                }
+                if (!eventsInfo.isNullOrEmpty()) {
+                    _recyclerViewData.postValue(eventsInfo)
+                    _progressEventsVisibility.postValue(false)
+                } else {
+                    _recyclerViewData.postValue(emptyList())
+                    _showInfoMessageFromResource.postValue(R.string.iM_team_det_failGetEvents)
+                    _progressEventsVisibility.postValue(false)
+                    _iBReloadEventsVisibility.postValue(true)
+                }
+            } catch (e: Exception) {
+                _showInfoMessage.postValue(
+                    exceptionProviderHelper
+                        .fromStrExceptionToUserMsg(e.toString() )
+                )
+                _recyclerViewData.postValue(emptyList())
                 _progressEventsVisibility.postValue(false)
                 _iBReloadEventsVisibility.postValue(true)
             }
+
         }
     }
 
@@ -244,33 +266,55 @@ class TeamDetailViewModel @Inject constructor(
     }
 
     fun onWebpageTeamClicked() {
-        if (!teamInfo.websiteLink.isNullOrEmpty()) {
-            _linkToWebpage.postValue(Intent(Intent.ACTION_VIEW, Uri.parse("https://${teamInfo.websiteLink!!}")))
+        try {
+            if (!teamInfo.websiteLink.isNullOrEmpty()) {
+                _linkToWebpage.postValue(Intent(Intent.ACTION_VIEW, Uri.parse("https://${teamInfo.websiteLink!!}")))
+            }
+        } catch (e: Exception) {
+            _showInfoMessage.value = exceptionProviderHelper.getStrIntentMsgException(1)
         }
+
     }
 
     fun onFacebookWebpageTeamClicked() {
-        if (!teamInfo.facebookLink.isNullOrEmpty()){
-            _linkToFacebookWebpage.postValue(Intent(Intent.ACTION_VIEW, Uri.parse("https://${teamInfo.facebookLink!!}")))
+        try {
+            if (!teamInfo.facebookLink.isNullOrEmpty()){
+                _linkToFacebookWebpage.postValue(Intent(Intent.ACTION_VIEW, Uri.parse("https://${teamInfo.facebookLink!!}")))
+            }
+        } catch (e: Exception) {
+            _showInfoMessage.value = exceptionProviderHelper.getStrIntentMsgException(2)
         }
     }
 
     fun onInstagramWebpageTeamClicked() {
-        if (!teamInfo.instagramLink.isNullOrEmpty()){
-            _linkToInstagramWebpage.postValue(Intent(Intent.ACTION_VIEW, Uri.parse("https://${teamInfo.instagramLink!!}")))
+        try {
+            if (!teamInfo.instagramLink.isNullOrEmpty()){
+                _linkToInstagramWebpage.postValue(Intent(Intent.ACTION_VIEW, Uri.parse("https://${teamInfo.instagramLink!!}")))
+            }
+        } catch (e: Exception) {
+            _showInfoMessage.value = exceptionProviderHelper.getStrIntentMsgException(3)
         }
     }
 
     fun onTwitterWebpageTeamClicked() {
-        if (!teamInfo.twitterLink.isNullOrEmpty()){
-            _linkToTwitterWebpage.postValue(Intent(Intent.ACTION_VIEW, Uri.parse("https://${teamInfo.twitterLink!!}")))
+        try {
+            if (!teamInfo.twitterLink.isNullOrEmpty()){
+                _linkToTwitterWebpage.postValue(Intent(Intent.ACTION_VIEW, Uri.parse("https://${teamInfo.twitterLink!!}")))
+            }
+        } catch (e: Exception) {
+            _showInfoMessage.value = exceptionProviderHelper.getStrIntentMsgException(4)
         }
     }
 
     fun onYoutubeWebpageTeamClicked() {
-        if (!teamInfo.youtubeLink.isNullOrEmpty()){
-            _linkToYoutubeWebpage.postValue(Intent(Intent.ACTION_VIEW, Uri.parse("https://${teamInfo.youtubeLink!!}")))
+        try {
+            if (!teamInfo.youtubeLink.isNullOrEmpty()){
+                _linkToYoutubeWebpage.postValue(Intent(Intent.ACTION_VIEW, Uri.parse("https://${teamInfo.youtubeLink!!}")))
+            }
+        } catch (e:Exception) {
+            _showInfoMessage.value = exceptionProviderHelper.getStrIntentMsgException(5)
         }
+
     }
 
     private fun getAPILeagueID(league: String): Int {

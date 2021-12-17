@@ -84,17 +84,17 @@ class TeamDetail : Fragment(),
         viewModel.showInfoMessage.observe(
             this,
             Observer {
+                this.requireActivity().toast(it)
+            }
+        )
+        viewModel.showInfoMessageFromResource.observe(
+            this,
+            Observer {
                 this
                     .requireActivity()
                     .toast(
                         this.requireActivity().getStringResource(it)
                     )
-            }
-        )
-        viewModel.showStrInfoMessage.observe(
-            this,
-            Observer {
-                this.requireActivity().toast(it)
             }
         )
         viewModel.goToXActivity.observe(

@@ -1,5 +1,6 @@
-package com.daveloper.soccerapp.data.model.use_cases
+package com.daveloper.soccerapp.data.model.use_cases.api
 
+import com.daveloper.soccerapp.auxiliar.exception_provider.ExceptionProviderHelper
 import com.daveloper.soccerapp.data.model.entity.Team
 import com.daveloper.soccerapp.data.network.TeamsInfoService
 import kotlinx.coroutines.Dispatchers
@@ -7,7 +8,8 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class GetLeagueTeamsFromAPIUseCase @Inject constructor(
-    private val teamsAPI: TeamsInfoService
+    private val teamsAPI: TeamsInfoService,
+    private  val exceptionProviderHelper: ExceptionProviderHelper
 ) {
     suspend fun getData (
         soccerLeague: String
@@ -20,7 +22,7 @@ class GetLeagueTeamsFromAPIUseCase @Inject constructor(
                     throw Exception(e)
                 }
             } else {
-                throw Exception("The parameter 'soccerLeague' is invalid (empty String)")
+                throw Exception(exceptionProviderHelper.getApiException(1))
             }
         }
     }

@@ -1,5 +1,6 @@
-package com.daveloper.soccerapp.data.model.use_cases
+package com.daveloper.soccerapp.data.model.use_cases.shared_preferences
 
+import com.daveloper.soccerapp.auxiliar.exception_provider.ExceptionProviderHelper
 import com.daveloper.soccerapp.data.local_database.shared_prefs.UserLocalData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -7,7 +8,8 @@ import javax.inject.Inject
 import kotlin.Exception
 
 class SaveSelectedLeagueForUserInUserLocalDataUseCase @Inject constructor(
-    private val userLocalData: UserLocalData
+    private val userLocalData: UserLocalData,
+    private val exceptionProviderHelper: ExceptionProviderHelper
 ) {
     suspend fun save (
         league: String
@@ -21,7 +23,7 @@ class SaveSelectedLeagueForUserInUserLocalDataUseCase @Inject constructor(
                 }
 
             } else {
-                throw Exception ("The parameter 'league' is invalid (empty String)")
+                throw Exception (exceptionProviderHelper.getUserLocalDataException(1))
             }
         }
     }

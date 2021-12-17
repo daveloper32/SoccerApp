@@ -1,6 +1,7 @@
-package com.daveloper.soccerapp.data.model.use_cases
+package com.daveloper.soccerapp.data.model.use_cases.api
 
 import android.annotation.SuppressLint
+import com.daveloper.soccerapp.auxiliar.exception_provider.ExceptionProviderHelper
 import com.daveloper.soccerapp.core.LeagueAPIHelper
 import com.daveloper.soccerapp.data.model.entity.Event
 import com.daveloper.soccerapp.data.network.EventsInfoService
@@ -13,7 +14,8 @@ import kotlin.Exception
 
 @SuppressLint("SimpleDateFormat")
 class GetNextXTeamEventsFromAPIUseCase @Inject constructor(
-    private val eventsInfoService: EventsInfoService
+    private val eventsInfoService: EventsInfoService,
+    private val exceptionProviderHelper: ExceptionProviderHelper
 ) {
 
     // Get the date of today
@@ -53,7 +55,7 @@ class GetNextXTeamEventsFromAPIUseCase @Inject constructor(
                     // return the next events
                     xNextEventsFound?: emptyList()
                 } else {
-                    throw Exception("The API could find any Event -> empty or null MutableList<Event>")
+                    throw Exception(exceptionProviderHelper.getApiException(2))
                 }
 
             } catch (e: Exception) {
@@ -90,7 +92,7 @@ class GetNextXTeamEventsFromAPIUseCase @Inject constructor(
         if (!nextEventsFound.isNullOrEmpty()) {
             return nextEventsFound
         } else {
-            throw Exception("No $numNextEvents Next Events found -> emptyArray")
+            throw Exception(exceptionProviderHelper.getApiException(3))
         }
     }
 }

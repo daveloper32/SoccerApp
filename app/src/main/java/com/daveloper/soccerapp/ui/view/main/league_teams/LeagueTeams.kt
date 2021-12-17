@@ -74,14 +74,16 @@ class LeagueTeams : Fragment(),
             viewLifecycleOwner,
             Observer {
                 this.requireActivity().toast(
-                    this.requireActivity().getStringResource(it)
+                    it
                 )
             }
         )
-        viewModel.goToXActivity.observe(
+        viewModel.showInfoMessageFromResource.observe(
             viewLifecycleOwner,
             Observer {
-                this.requireActivity().goToXActivity(it)
+                this.requireActivity().toast(
+                    this.requireActivity().getStringResource(it)
+                )
             }
         )
         viewModel.setSpinnerPosition.observe(

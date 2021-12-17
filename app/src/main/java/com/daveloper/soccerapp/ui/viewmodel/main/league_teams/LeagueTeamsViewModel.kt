@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.daveloper.soccerapp.R
+import com.daveloper.soccerapp.auxiliar.exception_provider.ExceptionProviderHelper
 import com.daveloper.soccerapp.auxiliar.internet_conection.InternetConnection
 import com.daveloper.soccerapp.core.LeagueAPIHelper
 import com.daveloper.soccerapp.data.model.entity.Team
@@ -16,24 +17,26 @@ import com.daveloper.soccerapp.domain.SaveSelectedLeagueUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.Exception
 
 @HiltViewModel
 class LeagueTeamsViewModel @Inject constructor(
     private val internetConnection: InternetConnection,
     private val getTeamsInfoByLeagueUseCase: GetTeamsInfoByLeagueUseCase,
     private val saveSelectedLeagueUseCase: SaveSelectedLeagueUseCase,
-    private val getSavedSelectedLeagueUseCase: GetSavedSelectedLeagueUseCase
+    private val getSavedSelectedLeagueUseCase: GetSavedSelectedLeagueUseCase,
+    private val exceptionProviderHelper: ExceptionProviderHelper
 ): ViewModel(){
     private var leagues = LeagueAPIHelper.getAllLeaguesN()
 
     private val _progressVisibility = MutableLiveData<Boolean>()
     val progressVisibility : LiveData<Boolean> get() = _progressVisibility
 
-    private val _showInfoMessage = MutableLiveData<Int>()
-    val showInfoMessage : LiveData<Int> get() = _showInfoMessage
+    private val _showInfoMessage = MutableLiveData<String>()
+    val showInfoMessage : LiveData<String> get() = _showInfoMessage
 
-    private val _goToXActivity = MutableLiveData<Class<out AppCompatActivity?>>()
-    val goToXActivity : LiveData<Class<out AppCompatActivity?>> get() = _goToXActivity
+    private val _showInfoMessageFromResource = MutableLiveData<Int>()
+    val showInfoMessageFromResource : LiveData<Int> get() = _showInfoMessageFromResource
 
     private val _setSpinnerPosition = MutableLiveData<Int>()
     val setSpinnerPosition : LiveData<Int> get() = _setSpinnerPosition
@@ -76,18 +79,26 @@ class LeagueTeamsViewModel @Inject constructor(
     private suspend fun getDataToFillRecyclerView(
         league: String
     ) {
-        val internetConnectionState = internetConnection.internetIsConnected()
-        val teamsInfo = getTeamsInfoByLeagueUseCase
-            .getInfo(getAPILeagueName(league), internetConnectionState)
-        if (!teamsInfo.isNullOrEmpty()) {
-            _recyclerViewData.postValue(teamsInfo)
-            _progressVisibility.postValue(false)
-        } else {
+        try {
+            val internetConnectionState = internetConnection.internetIsConnected()
+            val teamsInfo = getTeamsInfoByLeagueUseCase
+                .getInfo(getAPILeagueName(league), internetConnectionState)
+            if (!teamsInfo.isNullOrEmpty()) {
+                _recyclerViewData.postValue(teamsInfo)
+                _progressVisibility.postValue(false)
+            } else {
+                _recyclerViewData.postValue(emptyList())
+                _showInfoMessageFromResource.postValue(R.string.iM_main_failGetTeams)
+                _progressVisibility.postValue(false)
+                _iBReloadTeamsVisibility.value = true
+            }
+        } catch (e: Exception){
+            _showInfoMessage.postValue(exceptionProviderHelper.fromStrExceptionToUserMsg(e.toString()))
             _recyclerViewData.postValue(emptyList())
-            _showInfoMessage.postValue(R.string.iM_main_failGetTeams)
             _progressVisibility.postValue(false)
             _iBReloadTeamsVisibility.value = true
         }
+
     }
 
     fun onReloadTeamsClicked() {
@@ -119,9 +130,20 @@ class LeagueTeamsViewModel @Inject constructor(
 
     fun onSpinnerItemChanged(newLeague: String) {
         viewModelScope.launch {
-            saveSelectedLeagueUseCase.saveInfo(newLeague)
-            _iBReloadTeamsVisibility.value = false
-            onRefreshRv()
+            try {
+                saveSelectedLeagueUseCase.saveInfo(newLeague)
+                _iBReloadTeamsVisibility.postValue(false)
+                onRefreshRv()
+            } catch (e: Exception) {
+                _showInfoMessage.postValue(
+                    exceptionProviderHelper
+                        .fromStrExceptionToUserMsg(
+                            e.toString()
+                        )
+                )
+                _iBReloadTeamsVisibility.postValue(false)
+                onRefreshRv()
+            }
         }
     }
 }

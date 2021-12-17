@@ -1,4 +1,4 @@
-package com.daveloper.soccerapp.data.model.use_cases
+package com.daveloper.soccerapp.data.model.use_cases.room_db
 
 import com.daveloper.soccerapp.data.local_database.room.dao.TeamDao
 import com.daveloper.soccerapp.data.model.entity.Team

@@ -1,5 +1,6 @@
-package com.daveloper.soccerapp.data.model.use_cases
+package com.daveloper.soccerapp.data.model.use_cases.room_db
 
+import com.daveloper.soccerapp.auxiliar.exception_provider.ExceptionProviderHelper
 import com.daveloper.soccerapp.auxiliar.ext_fun.isNotNull
 import com.daveloper.soccerapp.data.local_database.room.dao.TeamDao
 import com.daveloper.soccerapp.data.model.entity.Team
@@ -9,7 +10,8 @@ import java.lang.Exception
 import javax.inject.Inject
 
 class UpdateTeamInDBUseCase @Inject constructor(
-    private val teamDao: TeamDao
+    private val teamDao: TeamDao,
+    private val exceptionProviderHelper: ExceptionProviderHelper
 ) {
 
     suspend fun update (
@@ -23,7 +25,7 @@ class UpdateTeamInDBUseCase @Inject constructor(
                     throw Exception(e)
                 }
             } else {
-                throw Exception("The parameter 'team' from the class Team is invalid (null)")
+                throw Exception(exceptionProviderHelper.getLocalDBException(5))
             }
         }
     }

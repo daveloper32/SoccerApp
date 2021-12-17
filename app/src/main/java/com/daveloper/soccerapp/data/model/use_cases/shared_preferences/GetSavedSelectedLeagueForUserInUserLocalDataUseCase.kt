@@ -1,4 +1,4 @@
-package com.daveloper.soccerapp.data.model.use_cases
+package com.daveloper.soccerapp.data.model.use_cases.shared_preferences
 
 import com.daveloper.soccerapp.data.local_database.shared_prefs.UserLocalData
 import kotlinx.coroutines.Dispatchers

@@ -1,7 +1,11 @@
 package com.daveloper.soccerapp.data.model.repository
 
 import com.daveloper.soccerapp.data.model.entity.Team
-import com.daveloper.soccerapp.data.model.use_cases.*
+import com.daveloper.soccerapp.data.model.use_cases.api.GetLeagueTeamsFromAPIUseCase
+import com.daveloper.soccerapp.data.model.use_cases.room_db.GetTeamsDataFromXLeagueFromDBUseCase
+import com.daveloper.soccerapp.data.model.use_cases.room_db.SaveAPIDataInDBUseCase
+import com.daveloper.soccerapp.data.model.use_cases.shared_preferences.GetSavedSelectedLeagueForUserInUserLocalDataUseCase
+import com.daveloper.soccerapp.data.model.use_cases.shared_preferences.SaveSelectedLeagueForUserInUserLocalDataUseCase
 import javax.inject.Inject
 
 class SoccerLeagueDataRepository @Inject constructor(

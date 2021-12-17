@@ -3,8 +3,8 @@ package com.daveloper.soccerapp.data.model.repository
 import com.daveloper.soccerapp.core.LeagueAPIHelper
 import com.daveloper.soccerapp.data.model.entity.Event
 import com.daveloper.soccerapp.data.model.entity.Team
-import com.daveloper.soccerapp.data.model.use_cases.GetDataFromXTeamFromDBUseCase
-import com.daveloper.soccerapp.data.model.use_cases.GetNextXTeamEventsFromAPIUseCase
+import com.daveloper.soccerapp.data.model.use_cases.room_db.GetDataFromXTeamFromDBUseCase
+import com.daveloper.soccerapp.data.model.use_cases.api.GetNextXTeamEventsFromAPIUseCase
 import javax.inject.Inject
 
 class NextTeamEventsDataRepository @Inject constructor(
